@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSG — How it works</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--black:#111111;
+  --c-appearance:#d4a8c8;--c-autoperception:#e8c040;--c-desire:#c42030;
+  --c-inheritance:#3a5a9e;--c-fear:#5c2a4a;--c-nerve:#2d8a3e;
+  --c-mirroring:#c8a8c0;--c-traces:#6e1a3a;
+  --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
+}
+html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
+.nav-logo{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.06em;color:var(--black);text-decoration:none;cursor:pointer}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--black);text-decoration:none;transition:color .2s;letter-spacing:0.01em;cursor:pointer}
+.nav-links a.active{color:rgba(0,0,0,0.32)}
+.nav-links a:not(.active):hover{color:var(--black);opacity:.7}
+
+/* ════════ TERMS ════════ */
+#terms{padding-top:80px}
+.terms-hero{padding:80px 56px 60px;border-bottom:1px solid rgba(0,0,0,0.1);position:relative}
+.terms-kicker{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:16px}
+.terms-h1{font-family:var(--serif);font-size:clamp(44px,5.5vw,74px);font-weight:400;line-height:1.06;letter-spacing:-0.025em;max-width:700px;margin-bottom:24px}
+.terms-h1 em{font-style:italic}
+.terms-lead{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,21px);line-height:1.7;max-width:600px;color:rgba(0,0,0,0.62)}
+
+/* Unsent-style anonymous note */
+.anon-note-section{background:var(--black);padding:72px 56px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;border-bottom:1px solid rgba(0,0,0,0.1)}
+@media(max-width:720px){.anon-note-section{grid-template-columns:1fr}}
+.anon-note-left{color:var(--white)}
+.anon-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:20px}
+.anon-h2{font-family:var(--serif);font-size:clamp(30px,3vw,46px);font-weight:400;line-height:1.2;letter-spacing:-0.02em;margin-bottom:20px;color:var(--white)}
+.anon-h2 em{font-style:italic}
+.anon-body{font-family:var(--serif);font-size:clamp(15px,1.3vw,17px);line-height:1.75;color:rgba(255,255,255,0.58)}
+/* Sticky note / letter mock */
+.anon-note-right{display:flex;align-items:center;justify-content:center}
+.sticky-note{background:#f5f0e2;padding:36px 32px 40px;width:320px;position:relative;box-shadow:3px 6px 24px rgba(0,0,0,0.4);transform:rotate(1.5deg)}
+.sticky-note::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c-desire)}
+.sticky-from{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.28);margin-bottom:20px}
+.sticky-text{font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.75;color:rgba(0,0,0,0.78)}
+.sticky-sign{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.35);margin-top:20px}
+
+/* Terms rules */
+.terms-rules{padding:64px 56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0;border-bottom:1px solid rgba(0,0,0,0.1)}
+.rule-item{padding:40px 40px 40px 0;border-right:1px solid rgba(0,0,0,0.08);padding-right:40px}
+.rule-item:last-child{border-right:none}
+@media(max-width:720px){.rule-item{border-right:none;border-bottom:1px solid rgba(0,0,0,0.08);padding:32px 0}}
+.rule-n{width:36px;height:36px;border:1.5px solid rgba(0,0,0,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:12px;font-weight:600;color:rgba(0,0,0,0.4);margin-bottom:20px}
+.rule-title{font-family:var(--sans);font-size:15px;font-weight:600;margin-bottom:10px;line-height:1.3}
+.rule-body{font-family:var(--serif);font-size:14px;line-height:1.7;color:rgba(0,0,0,0.58)}
+
+/* Final pledge */
+.terms-pledge{padding:72px 56px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+@media(max-width:720px){.terms-pledge{grid-template-columns:1fr}}
+.pledge-h2{font-family:var(--serif);font-size:clamp(28px,3vw,44px);font-weight:400;line-height:1.2;letter-spacing:-0.02em;margin-bottom:20px}
+.pledge-h2 em{font-style:italic}
+.pledge-body{font-family:var(--serif);font-size:clamp(15px,1.3vw,17px);line-height:1.8;color:rgba(0,0,0,0.62)}
+.pledge-body + .pledge-body{margin-top:16px}
+.pledge-right{}
+.pledge-list{list-style:none;display:flex;flex-direction:column;gap:18px;margin-top:8px}
+.pledge-list li{font-family:var(--serif);font-size:15px;line-height:1.65;color:rgba(0,0,0,0.65);padding-left:22px;position:relative}
+.pledge-list li::before{content:'—';position:absolute;left:0;color:rgba(0,0,0,0.28)}
+
+/* Color band */
+.color-band{display:flex;height:8px;width:100%}
+.color-band span{flex:1}
+
+/* Footer */
+footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--black)}
+.footer-copy{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.32)}
+.footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
+.footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
+.footer-contact a:hover{color:var(--black);border-color:var(--black)}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo" onclick="window.location.href='index.html'">TSG</span>
+  <ul class="nav-links">
+    <li><a href="assignments.html">Assignments</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="terms.html" class="active">Terms</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ TERMS ════════ -->
+<div id="terms">
+  <div class="terms-hero">
+    <p class="terms-kicker">How it works</p>
+    <h1 class="terms-h1">You are <em>anonymous.</em><br>Your answer is not.</h1>
+    <p class="terms-lead">TSG works because no one knows who you are — but everyone can read what you wrote. That asymmetry is the point.</p>
+  </div>
+
+  <div class="anon-note-section">
+    <div class="anon-note-left">
+      <p class="anon-label">The Anonymous Principle</p>
+      <h2 class="anon-h2">Your name stays<br>with you.<br><em>Your truth doesn't.</em></h2>
+      <p class="anon-body">When you submit a response to an assignment, it enters the archive without your name, your face, or any identifying information. What remains is only the answer — raw, unperformed, unfiltered by the need to manage how you're perceived.</p>
+      <br>
+      <p class="anon-body">Anonymity is not cowardice here. It is the condition that makes honesty possible. You can say what you actually think because no one will know it was you who thought it.</p>
+    </div>
+    <div class="anon-note-right">
+      <div class="sticky-note">
+        <p class="sticky-from">Anonymous response — Appearance 01</p>
+        <p class="sticky-text">"My mother always said I looked like her sister. Not her — her sister. I spent years trying to figure out what that meant. I think I still am."</p>
+        <p class="sticky-sign">— Anonymous, 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="terms-rules">
+    <div class="rule-item">
+      <div class="rule-n">1</div>
+      <h3 class="rule-title">No account required</h3>
+      <p class="rule-body">You do not need to register, sign in, or verify anything. You arrive, you respond, you leave. The archive holds your words — not your identity.</p>
+    </div>
+    <div class="rule-item">
+      <div class="rule-n">2</div>
+      <h3 class="rule-title">Responses are permanent</h3>
+      <p class="rule-body">Once submitted, a response becomes part of the archive. We do not delete them. This is not a draft — it is a deposit. Think before you write. Then write anyway.</p>
+    </div>
+    <div class="rule-item">
+      <div class="rule-n">3</div>
+      <h3 class="rule-title">No replies, no likes</h3>
+      <p class="rule-body">There is no engagement mechanic. No one can react to your answer, reply to it, or rate it. The archive is not a conversation — it is a collective monologue. Everyone speaks. No one responds.</p>
+    </div>
+    <div class="rule-item">
+      <div class="rule-n">4</div>
+      <h3 class="rule-title">One response per assignment</h3>
+      <p class="rule-body">You get one shot at each prompt. This is not because we don't trust you — it's because the first honest answer is almost always the right one.</p>
+    </div>
+    <div class="rule-item">
+      <div class="rule-n">5</div>
+      <h3 class="rule-title">Honesty over eloquence</h3>
+      <p class="rule-body">We are not curating beautiful writing. We are collecting honest thinking. A single sentence matters more than a polished paragraph. Say what you actually mean.</p>
+    </div>
+    <div class="rule-item">
+      <div class="rule-n">6</div>
+      <h3 class="rule-title">No hate. No performance.</h3>
+      <p class="rule-body">Responses that target other people, perform outrage, or use the archive as a platform will be removed. This is the only rule we enforce. The rest is yours.</p>
+    </div>
+  </div>
+
+  <div class="terms-pledge">
+    <div>
+      <h2 class="pledge-h2">What we<br>promise <em>you.</em></h2>
+      <p class="pledge-body">We built TSG because we believe the question "who am I?" deserves more than a personality test or a therapy session. It needs a place — an archive, a record, a proof that others asked the same thing and left their answer behind.</p>
+      <p class="pledge-body" style="margin-top:16px">We will never sell your data. We will never attach your name to your words. We will never use the archive for anything other than what it is: a collection of honest human answers to hard human questions.</p>
+    </div>
+    <div class="pledge-right">
+      <h3 style="font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:20px">Our commitments</h3>
+      <ul class="pledge-list">
+        <li>Your responses are anonymous and will remain so, always.</li>
+        <li>We do not store IP addresses linked to submissions.</li>
+        <li>The archive is read-only to the public — no profiles, no threads.</li>
+        <li>We will never monetise your responses or use them for training models.</li>
+        <li>If TSG ever closes, the archive will be made publicly available as a static record.</li>
+        <li>We are two people. Not a startup. Not a brand. This matters.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="color-band">
+    <span style="background:var(--c-appearance)"></span>
+    <span style="background:var(--c-autoperception)"></span>
+    <span style="background:var(--c-desire)"></span>
+    <span style="background:var(--c-inheritance)"></span>
+    <span style="background:var(--c-fear)"></span>
+    <span style="background:var(--c-nerve)"></span>
+    <span style="background:var(--c-mirroring)"></span>
+    <span style="background:var(--c-traces)"></span>
+  </div>
+  <div id="footer-container"></div>
+</div>
+
+<script src="footer.js"></script>
+
+</body>
+</html>

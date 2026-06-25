@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSG — Community Responses</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--black:#111111;
+  --c-appearance:#d4a8c8;--c-autoperception:#e8c040;--c-desire:#c42030;
+  --c-inheritance:#3a5a9e;--c-fear:#5c2a4a;--c-nerve:#2d8a3e;
+  --c-mirroring:#c8a8c0;--c-traces:#6e1a3a;
+  --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
+}
+html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
+.nav-logo{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.06em;color:var(--black);text-decoration:none;cursor:pointer}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--black);text-decoration:none;transition:color .2s;letter-spacing:0.01em;cursor:pointer}
+.nav-links a.active{color:rgba(0,0,0,0.32)}
+.nav-links a:not(.active):hover{color:var(--black);opacity:.7}
+
+/* ══ ARCHIVE2 ══ */
+#archive2{padding-top:80px;min-height:100vh}
+.archive2-hero{padding:48px 56px 32px;border-bottom:1px solid rgba(0,0,0,0.1)}
+.archive2-kicker{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:8px}
+.archive2-title-row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.archive2-title{font-family:var(--serif);font-size:clamp(42px,5vw,70px);font-weight:400;line-height:1;letter-spacing:-0.02em}
+.archive2-count{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,22px);color:rgba(0,0,0,0.38)}
+
+/* Topic filter tabs */
+.topic-tabs{display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,0.1);overflow-x:auto}
+.topic-tab{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:16px 24px;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;color:rgba(0,0,0,0.4);background:transparent;white-space:nowrap}
+.topic-tab:hover{color:var(--black);background:rgba(0,0,0,0.02)}
+.topic-tab.active{color:var(--black);border-bottom-color:var(--black)}
+
+/* Responses grid */
+.responses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;padding:32px 48px}
+.response-card{border:1px solid rgba(0,0,0,0.1);border-radius:4px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.response-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.response-card-header{padding:16px 20px;display:flex;align-items:center;gap:10px}
+.response-topic-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.response-topic-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;opacity:.5}
+.response-assignment-title{font-family:var(--sans);font-size:11px;font-weight:500;opacity:.4;margin-left:auto}
+.response-body{padding:20px}
+.response-text{font-family:var(--serif);font-size:14px;line-height:1.6;color:var(--black);white-space:pre-wrap}
+.response-text.empty{font-style:italic;opacity:.35}
+.response-image{margin-top:12px}
+.response-image img{max-width:100%;max-height:300px;border-radius:3px;border:1px solid rgba(0,0,0,0.08)}
+.response-footer{padding:12px 20px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px}
+.response-badge{font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:0.06em;padding:4px 10px;border-radius:2px;text-transform:uppercase}
+.response-badge.text{background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.5)}
+.response-badge.image{background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.5)}
+
+/* Empty state */
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px}
+.empty-state-icon{font-size:48px;margin-bottom:16px;opacity:.3}
+.empty-state-text{font-family:var(--serif);font-size:18px;font-style:italic;opacity:.4}
+
+/* Color band */
+.color-band{display:flex;height:8px;width:100%}
+.color-band span{flex:1}
+
+/* Footer */
+footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--black)}
+.footer-copy{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.32)}
+.footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
+.footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
+.footer-contact a:hover{color:var(--black);border-color:var(--black)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">TSG</a>
+  <ul class="nav-links">
+    <li><a href="assignments.html">Assignments</a></li>
+    <li><a href="community.html" class="active">Community</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="terms.html">Terms</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ ARCHIVE2 — COMMUNITY RESPONSES ════════ -->
+<div id="archive2">
+  <div class="archive2-hero">
+    <p class="archive2-kicker">Community</p>
+    <div class="archive2-title-row">
+      <h1 class="archive2-title">Community Responses</h1>
+      <span class="archive2-count" id="archive2-count"></span>
+    </div>
+  </div>
+  <div class="topic-tabs" id="topic-tabs">
+    <div class="topic-tab active" data-topic="all">All</div>
+    <div class="topic-tab" data-topic="appearance">Appearance</div>
+    <div class="topic-tab" data-topic="autoperception">Autoperception</div>
+    <div class="topic-tab" data-topic="desire">Desire</div>
+    <div class="topic-tab" data-topic="inheritance">Inheritance</div>
+    <div class="topic-tab" data-topic="fear">Fear</div>
+    <div class="topic-tab" data-topic="nerve">Nerve</div>
+    <div class="topic-tab" data-topic="mirroring">Mirroring</div>
+    <div class="topic-tab" data-topic="traces">Traces</div>
+  </div>
+  <div class="responses-grid" id="responses-grid"></div>
+  <div class="color-band">
+    <span style="background:var(--c-appearance)"></span>
+    <span style="background:var(--c-autoperception)"></span>
+    <span style="background:var(--c-desire)"></span>
+    <span style="background:var(--c-inheritance)"></span>
+    <span style="background:var(--c-fear)"></span>
+    <span style="background:var(--c-nerve)"></span>
+    <span style="background:var(--c-mirroring)"></span>
+    <span style="background:var(--c-traces)"></span>
+  </div>
+  <div id="footer-container"></div>
+</div>
+
+<script>
+const TOPICS={
+  appearance:{label:'Appearance',color:'var(--c-appearance)'},
+  autoperception:{label:'Autoperception',color:'var(--c-autoperception)'},
+  desire:{label:'Desire',color:'var(--c-desire)'},
+  inheritance:{label:'Inheritance',color:'var(--c-inheritance)'},
+  fear:{label:'Fear',color:'var(--c-fear)'},
+  nerve:{label:'Nerve',color:'var(--c-nerve)'},
+  mirroring:{label:'Mirroring',color:'var(--c-mirroring)'},
+  traces:{label:'Traces',color:'var(--c-traces)'}
+};
+
+const ASSIGNMENTS={
+  appearance:[
+    {id:'appearance-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'appearance-02',title:'Assignment 02',desc:'Describe yourself without using your body'},
+    {id:'appearance-03',title:'Assignment 03',desc:'Find a photograph you were never meant to see'},
+    {id:'appearance-04',title:'Assignment 04',desc:'Dress for someone who has never met you'},
+    {id:'appearance-05',title:'Assignment 05',desc:'Write a letter to your reflection'},
+  ],
+  autoperception:[
+    {id:'autoperception-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'autoperception-02',title:'Assignment 02',desc:'Record yourself for one minute without speaking'},
+    {id:'autoperception-03',title:'Assignment 03',desc:'List five things you pretend to be'},
+    {id:'autoperception-04',title:'Assignment 04',desc:'Describe the version of you others see'},
+  ],
+  desire:[
+    {id:'desire-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'desire-02',title:'Assignment 02',desc:'Name a want you have never spoken aloud'},
+    {id:'desire-03',title:'Assignment 03',desc:'Trace desire back to its origin'},
+    {id:'desire-04',title:'Assignment 04',desc:'Write about what you are afraid to want'},
+    {id:'desire-05',title:'Assignment 05',desc:'Find the desire that was never yours'},
+    {id:'desire-06',title:'Assignment 06',desc:'Map the people who shaped what you want'},
+  ],
+  inheritance:[
+    {id:'inheritance-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'inheritance-02',title:'Assignment 02',desc:'Find a habit you did not choose'},
+    {id:'inheritance-03',title:'Assignment 03',desc:'Identify what was passed down in silence'},
+    {id:'inheritance-04',title:'Assignment 04',desc:'Name the story told before you were born'},
+  ],
+  fear:[
+    {id:'fear-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'fear-02',title:'Assignment 02',desc:'Describe a fear that protects you'},
+    {id:'fear-03',title:'Assignment 03',desc:'Trace a fear to its first moment'},
+    {id:'fear-04',title:'Assignment 04',desc:'Write about what fear has cost you'},
+    {id:'fear-05',title:'Assignment 05',desc:'Find a fear that belongs to someone else'},
+  ],
+  nerve:[
+    {id:'nerve-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'nerve-02',title:'Assignment 02',desc:'Notice where courage lives in your body'},
+    {id:'nerve-03',title:'Assignment 03',desc:'Do one thing that makes you visible'},
+  ],
+  mirroring:[
+    {id:'mirroring-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'mirroring-02',title:'Assignment 02',desc:'Find someone you have become'},
+    {id:'mirroring-03',title:'Assignment 03',desc:'Notice what you copy without knowing'},
+    {id:'mirroring-04',title:'Assignment 04',desc:'Write about who you see when you look at others'},
+    {id:'mirroring-05',title:'Assignment 05',desc:'Identify your mirrors and your blind spots'},
+  ],
+  traces:[
+    {id:'traces-01',title:'Assignment 01',desc:'Ask your family who you are'},
+    {id:'traces-02',title:'Assignment 02',desc:'Find evidence of who you used to be'},
+    {id:'traces-03',title:'Assignment 03',desc:'Collect the objects that remember for you'},
+    {id:'traces-04',title:'Assignment 04',desc:'Write about a trace you left by accident'},
+  ]
+};
+
+// Load submissions from localStorage
+function loadSubmissions() {
+  try {
+    const saved = localStorage.getItem('assignmentSubmissions');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (e) {
+    console.warn('Failed to load submissions:', e);
+  }
+  return {};
+}
+
+// Get topic key from assignment ID
+function getTopicFromId(assignmentId) {
+  for (const [key, topic] of Object.entries(ASSIGNMENTS)) {
+    if (topic.some(a => a.id === assignmentId)) {
+      return key;
+    }
+  }
+  return null;
+}
+
+// Get assignment info from ID
+function getAssignmentFromId(assignmentId) {
+  for (const topicAssignments of Object.values(ASSIGNMENTS)) {
+    const assignment = topicAssignments.find(a => a.id === assignmentId);
+    if (assignment) return assignment;
+  }
+  return null;
+}
+
+// Build flat list of all submissions
+function getAllSubmissions(submissions) {
+  const results = [];
+  Object.entries(submissions).forEach(([assignmentId, data]) => {
+    if (!data || (!data.text && !data.image)) return;
+    const assignment = getAssignmentFromId(assignmentId);
+    const topicKey = getTopicFromId(assignmentId);
+    if (assignment && topicKey) {
+      results.push({
+        assignmentId,
+        assignment,
+        topicKey,
+        topicLabel: TOPICS[topicKey].label,
+        topicColor: TOPICS[topicKey].color,
+        ...data
+      });
+    }
+  });
+  return results;
+}
+
+// Render responses
+function renderResponses(topicKey) {
+  const grid = document.getElementById('responses-grid');
+  const countEl = document.getElementById('archive2-count');
+  const submissions = loadSubmissions();
+  const allSubmissions = getAllSubmissions(submissions);
+
+  // Filter by topic
+  const filtered = topicKey === 'all'
+    ? allSubmissions
+    : allSubmissions.filter(s => s.topicKey === topicKey);
+
+  countEl.textContent = filtered.length + ' response' + (filtered.length !== 1 ? 's' : '');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">◇</div>
+        <div class="empty-state-text">No responses yet. Complete an assignment to see it here.</div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(sub => {
+    const topicDotStyle = `background:${sub.topicColor.replace('var(--c-', '').replace(')', '')}`;
+    // Map CSS variable names to actual colors for inline display
+    const colorMap = {
+      'appearance':'var(--c-appearance)',
+      'autoperception':'var(--c-autoperception)',
+      'desire':'var(--c-desire)',
+      'inheritance':'var(--c-inheritance)',
+      'fear':'var(--c-fear)',
+      'nerve':'var(--c-nerve)',
+      'mirroring':'var(--c-mirroring)',
+      'traces':'var(--c-traces)'
+    };
+    const badgeClass = sub.image && sub.text ? 'text image' : sub.image ? 'image' : 'text';
+    const badgeLabels = [];
+    if (sub.text) badgeLabels.push('Text');
+    if (sub.image) badgeLabels.push('Image');
+
+    let bodyContent = '';
+    if (sub.text) {
+      bodyContent += `<div class="response-text ${sub.text.trim() ? '' : 'empty'}">${sub.text.replace(/</g,'<').replace(/>/g,'>')}</div>`;
+    }
+    if (sub.image) {
+      bodyContent += `<div class="response-image"><img src="${sub.image}" alt="Assignment submission"></div>`;
+    }
+
+    return `
+      <div class="response-card" data-topic="${sub.topicKey}">
+        <div class="response-card-header">
+          <div class="response-topic-dot" style="background:${colorMap[sub.topicKey] || 'rgba(0,0,0,0.3)'}"></div>
+          <span class="response-topic-label">${sub.topicLabel}</span>
+          <span class="response-assignment-title">${sub.assignment.title}</span>
+        </div>
+        <div class="response-body">
+          ${bodyContent}
+        </div>
+        <div class="response-footer">
+          ${badgeLabels.map(l => `<span class="response-badge ${l.toLowerCase()}">${l}</span>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// Topic tabs
+document.getElementById('topic-tabs').addEventListener('click', e => {
+  if (e.target.classList.contains('topic-tab')) {
+    document.querySelectorAll('.topic-tab').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    renderResponses(e.target.dataset.topic);
+  }
+});
+
+// Init
+renderResponses('all');
+
+</script>
+<script src="footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSG — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--black:#111111;
+  --c-appearance:#d4a8c8;--c-autoperception:#e8c040;--c-desire:#c42030;
+  --c-inheritance:#3a5a9e;--c-fear:#5c2a4a;--c-nerve:#2d8a3e;
+  --c-mirroring:#c8a8c0;--c-traces:#6e1a3a;
+  --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
+}
+html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
+.nav-logo{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.06em;color:var(--black);text-decoration:none;cursor:pointer}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--black);text-decoration:none;transition:color .2s;letter-spacing:0.01em;cursor:pointer}
+.nav-links a.active{color:rgba(0,0,0,0.32)}
+.nav-links a:not(.active):hover{color:var(--black);opacity:.7}
+
+/* ════════ ABOUT ════════ */
+#about{padding-top:80px}
+.about-hero{padding:80px 56px 64px;position:relative;overflow:hidden;border-bottom:1px solid rgba(0,0,0,0.1)}
+.about-hero-bg{position:absolute;top:0;right:0;bottom:0;width:42%;background:var(--black);z-index:0}
+.about-hero-content{position:relative;z-index:1;max-width:620px}
+.about-kicker{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:16px}
+.about-h1{font-family:var(--serif);font-size:clamp(46px,5.8vw,78px);font-weight:400;line-height:1.04;letter-spacing:-0.03em;margin-bottom:28px}
+.about-h1 em{font-style:italic}
+.about-intro{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,21px);line-height:1.7;opacity:.65;max-width:560px;margin-bottom:32px}
+
+/* Beauvoir pull quote */
+.bv-quote-section{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(0,0,0,0.1)}
+@media(max-width:720px){.bv-quote-section{grid-template-columns:1fr}}
+.bv-quote-left{background:var(--black);color:var(--white);padding:72px 56px;display:flex;flex-direction:column;justify-content:center}
+.bv-quote-mark{font-family:var(--serif);font-size:80px;line-height:.6;color:rgba(255,255,255,0.15);margin-bottom:24px}
+.bv-quote-text{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.4vw,32px);line-height:1.45;letter-spacing:-0.01em;margin-bottom:28px}
+.bv-quote-attr{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.38)}
+.bv-quote-right{padding:72px 56px;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.bv-body-p{font-family:var(--serif);font-size:clamp(15px,1.3vw,18px);line-height:1.75;color:rgba(0,0,0,0.7)}
+.bv-body-p strong{font-weight:500;color:var(--black)}
+
+/* Manifesto strip */
+.manifesto-strip{padding:64px 56px;border-bottom:1px solid rgba(0,0,0,0.1);display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px}
+@media(max-width:800px){.manifesto-strip{grid-template-columns:1fr}}
+.manifesto-item{}
+.manifesto-n{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:14px}
+.manifesto-title{font-family:var(--serif);font-size:clamp(20px,1.8vw,26px);font-weight:400;margin-bottom:10px;line-height:1.25}
+.manifesto-body{font-family:var(--serif);font-size:14px;line-height:1.7;color:rgba(0,0,0,0.6)}
+
+/* Colored bar band */
+.color-band{display:flex;height:8px;width:100%}
+.color-band span{flex:1}
+
+/* About CTA */
+.about-cta{padding:72px 56px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;border-bottom:1px solid rgba(0,0,0,0.1)}
+.about-cta-text{}
+.cta-h2{font-family:var(--serif);font-size:clamp(32px,3.5vw,52px);font-weight:400;letter-spacing:-0.02em;line-height:1.15;max-width:540px;margin-bottom:12px}
+.cta-sub{font-family:var(--serif);font-style:italic;font-size:16px;color:rgba(0,0,0,0.5);line-height:1.6}
+.btn-join{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--black);font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:14px 28px;border:1.5px solid var(--black);cursor:pointer;border-radius:2px;transition:background .2s,color .2s,transform .15s;width:fit-content}
+.btn-join:hover{background:var(--black);color:var(--white);transform:translateY(-1px)}
+
+/* Footer */
+footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--black)}
+.footer-copy{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.32)}
+.footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
+.footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
+.footer-contact a:hover{color:var(--black);border-color:var(--black)}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo" onclick="window.location.href='index.html'">TSG</span>
+  <ul class="nav-links">
+    <li><a href="assignments.html">Assignments</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="terms.html">Terms</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ ABOUT ════════ -->
+<div id="about">
+  <div class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="about-hero-content">
+      <p class="about-kicker">About</p>
+      <h1 class="about-h1">You were not<br>born <em>who you are.</em><br>You became it.</h1>
+      <p class="about-intro">TSG is not a platform. It is a position. A refusal to accept that who you are was decided for you — by biology, by family, by the gaze of others.</p>
+    </div>
+  </div>
+
+  <div class="bv-quote-section">
+    <div class="bv-quote-left">
+      <div class="bv-quote-mark">"</div>
+      <p class="bv-quote-text">One is not born, but rather becomes, a woman.</p>
+      <p class="bv-quote-attr">Simone de Beauvoir — The Second Sex, 1949</p>
+    </div>
+    <div class="bv-quote-right">
+      <p class="bv-body-p">Beauvoir said it about women. We say it about <strong>everyone.</strong> Identity is not a given. It is a construction — ongoing, contested, and always in progress.</p>
+      <p class="bv-body-p">The Subordinate Gaze is an archive built on that premise. We collect the work of people who are <strong>actively constructing who they are</strong> — through their answers, their questions, their contradictions.</p>
+      <p class="bv-body-p">We don't offer answers. We offer <strong>the right prompts.</strong></p>
+    </div>
+  </div>
+
+  <div class="manifesto-strip">
+    <div class="manifesto-item">
+      <p class="manifesto-n">01</p>
+      <h3 class="manifesto-title">We question the given</h3>
+      <p class="manifesto-body">Nothing about your identity is fixed. Not your gender, your class, your nationality, your name. Everything you call "you" is a sediment of decisions — yours and others'. We start from there.</p>
+    </div>
+    <div class="manifesto-item">
+      <p class="manifesto-n">02</p>
+      <h3 class="manifesto-title">We build in public</h3>
+      <p class="manifesto-body">The archive is not a finished product. It grows with every person who contributes. Your response to an assignment becomes part of the collective record — anonymously, permanently, honestly.</p>
+    </div>
+    <div class="manifesto-item">
+      <p class="manifesto-n">03</p>
+      <h3 class="manifesto-title">We refuse comfort</h3>
+      <p class="manifesto-body">The assignments are not therapeutic exercises. Some of them will be uncomfortable. That discomfort is the point. You cannot construct a self without first dismantling the one you were handed.</p>
+    </div>
+  </div>
+
+  <div class="about-cta">
+    <div class="about-cta-text">
+      <h2 class="cta-h2">Ready to contribute<br>to the archive?</h2>
+      <p class="cta-sub">Start with one assignment. You don't need to know who you are yet.</p>
+    </div>
+    <button class="btn-join" onclick="window.location.href='assignments.html'">Go to Assignments →</button>
+  </div>
+
+  <div class="color-band">
+    <span style="background:var(--c-appearance)"></span>
+    <span style="background:var(--c-autoperception)"></span>
+    <span style="background:var(--c-desire)"></span>
+    <span style="background:var(--c-inheritance)"></span>
+    <span style="background:var(--c-fear)"></span>
+    <span style="background:var(--c-nerve)"></span>
+    <span style="background:var(--c-mirroring)"></span>
+    <span style="background:var(--c-traces)"></span>
+  </div>
+  <div id="footer-container"></div>
+</div>
+
+<script src="footer.js"></script>
+
+</body>
+</html>

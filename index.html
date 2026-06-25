@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSG — The Subordinate Gaze</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--black:#111111;
+  --c-appearance:#ddadd0;--c-autoperception:#7a1142;--c-desire:#ddadd0;
+  --c-inheritance:#009444;--c-fear:#ffcf00;--c-nerve:#e20613;
+  --c-mirroring:#4963ab;--c-traces:#7a1142;
+  --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
+}
+html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
+.nav-logo{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.06em;color:var(--black);text-decoration:none;cursor:pointer}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--black);text-decoration:none;transition:color .2s;letter-spacing:0.01em;cursor:pointer}
+.nav-links a.active{color:rgba(0,0,0,0.32)}
+.nav-links a:not(.active):hover{color:var(--black);opacity:.7}
+
+/* ══ HOME ══ */
+#home{padding-top:80px;max-width:100%;align-items:center}
+.hero-content{width:100%;display:flex;flex-direction:column;align-items:center}
+
+.hero-text{text-align:left;padding:52px 56px 50px;width:100%;position:relative}
+.title-block{position:relative;display:inline-block;line-height:1.08}
+.hero-title{font-family:var(--serif);font-size:clamp(52px,6.5vw,86px);font-weight:400;color:var(--black);line-height:1.08;letter-spacing:-0.025em}
+.stamp-wrap{position:absolute;top:25px;left:50%;transform:translateX(-60%) rotate(-3deg);z-index:2;pointer-events:none}
+.stamp{display:inline-block;background:var(--white);border:3px solid var(--black);padding:4px 16px 6px;font-family:var(--sans);font-size:clamp(32px,4vw,40px);font-weight:700;color:var(--black);letter-spacing:0.04em;white-space:nowrap}
+.hero-sub{font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.3vw,19px);color:var(--black);line-height:1.6;margin-top:16px;opacity:.7}
+
+/* Shelf area */
+.shelf-area{
+  width:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  position:relative;padding-bottom:60px;
+}
+
+/* Book row */
+.books{
+  display:flex;align-items:flex-end;justify-content:center;
+  width:100%;gap:8px;position:relative;
+}
+
+.book-wrap{
+  position:relative;flex-shrink:0;display:flex;align-items:flex-end;
+  transition:transform 1.0s cubic-bezier(0.25,0.1,0.25,1.0);
+}
+
+.book{
+  position:relative;flex-shrink:0;overflow:visible;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:140px;
+  transform-origin:center center;
+  transition:transform 1.0s cubic-bezier(0.25,0.1,0.25,1.0);
+  z-index:1;border-radius:2px 3px 3px 2px;
+  box-shadow:inset -4px 0 10px rgba(0,0,0,0.18),2px 4px 16px rgba(0,0,0,0.18);
+}
+
+.book.is-active{z-index:20}
+
+/* Book spine detail */
+.book::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:12px;
+  background:linear-gradient(to right,rgba(0,0,0,0.22),transparent);
+  border-radius:3px 0 0 3px;pointer-events:none;
+}
+.book::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:rgba(255,255,255,0.18);border-radius:3px 3px 0 0;pointer-events:none;
+}
+
+/* ── label ── */
+.book-label{
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  font-weight:700;font-size:14px;letter-spacing:0.24em;text-transform:uppercase;
+  white-space:nowrap;padding-bottom:28px;
+  transition:opacity .2s ease;pointer-events:none;user-select:none;
+}
+
+/* ── hover overlay ── */
+.book-hover{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:28px;opacity:0;transition:opacity .26s ease;pointer-events:none;
+}
+.book.is-active .book-hover{opacity:1}
+.book.is-active .book-label{opacity:0}
+
+.hover-line{
+  width:2px;background:transparent;flex-shrink:0;height:0;
+  margin-bottom:14px;transition:height .34s cubic-bezier(0.4,0,0.2,1) .08s;
+}
+.book.is-active .hover-line{height:100px}
+
+.hover-msg{
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  font-weight:500;font-size:13px;letter-spacing:0.14em;
+  color:rgba(0,0,0,0.66);white-space:nowrap;user-select:none;
+}
+
+/* ── decorative books have no interactive styling ── */
+.book-wrap.deco-wrap{cursor:default}
+.book-wrap.deco-wrap .book{cursor:default}
+
+/* Color band */
+.color-band{display:flex;height:8px;width:100%;margin-top:0}
+.color-band span{flex:1}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo active">TSG</a>
+  <ul class="nav-links">
+    <li><a href="assignments.html">Assignments</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="terms.html">Terms</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ HOME ════════ -->
+<div id="home">
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="title-block">
+        <div class="stamp-wrap"><span class="stamp">subordinate</span></div>
+        <h1 class="hero-title">The Subordinate Gaze</h1>
+      </div>
+      <p class="hero-sub">An evolving archive of those who question,<br>interpret, and construct who they are</p>
+    </div>
+
+    <div class="shelf-area">
+      <div class="books" id="booksRow"></div>
+    </div>
+  </div>
+
+  <div class="color-band">
+    <span style="background:var(--c-appearance)"></span>
+    <span style="background:var(--c-autoperception)"></span>
+    <span style="background:var(--c-desire)"></span>
+    <span style="background:var(--c-inheritance)"></span>
+    <span style="background:var(--c-fear)"></span>
+    <span style="background:var(--c-nerve)"></span>
+    <span style="background:var(--c-mirroring)"></span>
+    <span style="background:var(--c-traces)"></span>
+  </div>
+  <div id="footer-container"></div>
+</div>
+
+<script src="footer.js"></script>
+<script>
+// ── Book definitions ──────────────────────────────────────────────
+const TILT_DEG = 12;
+
+// Decorative books (edges) — lighter versions of main book palette
+const decoLeft = [
+  { color: "#9e9e9e", w: 52,  h: 370 },
+  { color: "#b5b5b5", w: 38,  h: 350 },
+  { color: "#8a8a8a", w: 48,  h: 385 },
+  { color: "#c2c2c2", w: 42,  h: 340 },
+  { color: "#7a7a7a", w: 56,  h: 365 },
+];
+const decoRight = [
+  { color: "#a8a8a8", w: 50,  h: 375 },
+  { color: "#919191", w: 62,  h: 355 },
+  { color: "#b0b0b0", w: 44,  h: 390 },
+  { color: "#858585", w: 58,  h: 345 },
+  { color: "#c0c0c0", w: 46,  h: 360 },
+];
+
+const mainBooks = [
+  { topic: "APPEARANCE",     color: "#ddadd0", w: 130, h: 480 },
+  { topic: "AUTOPERCEPTION", color: "#7a1142", w: 88,  h: 425 },
+  { topic: "DESIRE",         color: "#ddadd0", w: 110, h: 455 },
+  { topic: "INHERITANCE",    color: "#009444", w: 155, h: 530 },
+  { topic: "FEAR",           color: "#ffcf00", w: 100, h: 440 },
+  { topic: "NERVE",          color: "#e20613", w: 90,  h: 500 },
+  { topic: "MIRRORING",      color: "#4963ab", w: 125, h: 485 },
+  { topic: "TRACES",         color: "#7a1142", w: 88,  h: 430 },
+];
+
+// Assign a random tilt direction to each main book at load time
+mainBooks.forEach(b => {
+  b.dir = Math.random() < 0.5 ? -1 : 1;
+});
+
+// Full ordered list: deco | main | deco
+const allBooks = [
+  ...decoLeft.map(b => ({ ...b, deco: true })),
+  ...mainBooks.map(b => ({ ...b, deco: false })),
+  ...decoRight.map(b => ({ ...b, deco: true })),
+];
+
+// ── Build DOM ────────────────────────────────────────────────────
+const row = document.getElementById("booksRow");
+const wraps = [];
+const bookEls = [];
+
+allBooks.forEach((b, i) => {
+  const wrap = document.createElement("div");
+  wrap.className = b.deco ? "book-wrap deco-wrap" : "book-wrap";
+
+  const book = document.createElement("div");
+  book.className = "book";
+  book.style.width = b.w + "px";
+  book.style.height = b.h + "px";
+  book.style.background = b.color;
+
+  if (!b.deco) {
+    // label
+    const label = document.createElement("span");
+    label.className = "book-label";
+    label.textContent = b.topic;
+    label.style.color = getContrastColor(b.color);
+    book.appendChild(label);
+
+    // hover overlay
+    const hov = document.createElement("div");
+    hov.className = "book-hover";
+
+    const line = document.createElement("div");
+    line.className = "hover-line";
+    line.style.background = getContrastColor(b.color);
+
+    const msg = document.createElement("span");
+    msg.className = "hover-msg";
+    msg.textContent = "Share your experience ";
+    msg.style.color = getContrastColor(b.color);
+
+    hov.appendChild(line);
+    hov.appendChild(msg);
+    book.appendChild(hov);
+
+    book.style.cursor = "pointer";
+
+    const idx = i;
+    book.addEventListener("mouseenter", () => activate(idx, b));
+    book.addEventListener("mouseleave", () => deactivate());
+  }
+
+  wrap.appendChild(book);
+  row.appendChild(wrap);
+  wraps.push(wrap);
+  bookEls.push(book);
+});
+
+// ── Tilt + push logic ────────────────────────────────────────────
+function activate(idx, b) {
+  const bookEl = bookEls[idx];
+  bookEl.classList.add("is-active");
+  bookEl.style.transform = `rotate(${b.dir * TILT_DEG}deg)`;
+
+  const PUSH = 55;
+  wraps.forEach((wrap, i) => {
+    if (i === idx) return;
+    wrap.style.transform = `translateX(${i < idx ? -PUSH : PUSH}px)`;
+  });
+}
+
+function deactivate() {
+  bookEls.forEach(el => {
+    el.classList.remove("is-active");
+    el.style.transform = "";
+  });
+  wraps.forEach(wrap => { wrap.style.transform = ""; });
+}
+
+// ── Helper: determine text color based on book brightness ──
+function getContrastColor(hexColor) {
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  if (luminance > 0.5) {
+    return `rgb(${Math.round(r * 0.45)}, ${Math.round(g * 0.45)}, ${Math.round(b * 0.45)})`;
+  } else {
+    return `rgb(${Math.round(r + (255 - r) * 0.5)}, ${Math.round(g + (255 - g) * 0.5)}, ${Math.round(b + (255 - b) * 0.5)})`;
+  }
+}
+</script>
+</body>
+</html>

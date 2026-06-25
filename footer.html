@@ -1,0 +1,31 @@
+<style>
+/* Footer */
+footer{padding:0;border:none;display:flex;flex-direction:column}
+.color-band{display:flex;height:8px;width:100%}
+.color-band span{flex:1}
+.footer-inner{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--black)}
+.footer-copy{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.32)}
+.footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
+.footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
+.footer-contact a:hover{color:var(--black);border-color:var(--black)}
+</style>
+<footer>
+  <div class="color-band">
+    <span style="background:var(--c-appearance)"></span>
+    <span style="background:var(--c-autoperception)"></span>
+    <span style="background:var(--c-desire)"></span>
+    <span style="background:var(--c-inheritance)"></span>
+    <span style="background:var(--c-fear)"></span>
+    <span style="background:var(--c-nerve)"></span>
+    <span style="background:var(--c-mirroring)"></span>
+    <span style="background:var(--c-traces)"></span>
+  </div>
+  <div class="footer-inner">
+    <span class="footer-logo">TSG</span>
+    <span class="footer-contact">Press & collaborations —
+      <a href="mailto:hello@thesubordinategaze.com">hello@thesubordinategaze.com</a>
+    </span>
+    <span class="footer-copy">The Subordinate Gaze &copy; 2025</span>
+  </div>
+</footer>

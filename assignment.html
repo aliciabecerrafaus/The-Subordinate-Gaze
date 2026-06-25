@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSG — Assignment</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--black:#111111;
+  --c-appearance:#d4a8c8;--c-autoperception:#e8c040;--c-desire:#c42030;
+  --c-inheritance:#3a5a9e;--c-fear:#5c2a4a;--c-nerve:#2d8a3e;
+  --c-mirroring:#c8a8c0;--c-traces:#6e1a3a;
+  --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
+}
+html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
+.nav-logo{font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.06em;color:var(--black);text-decoration:none;cursor:pointer}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--black);text-decoration:none;transition:color .2s;letter-spacing:0.01em;cursor:pointer}
+.nav-links a.active{color:rgba(0,0,0,0.32)}
+.nav-links a:not(.active):hover{color:var(--black);opacity:.7}
+
+/* ASSIGNMENT PAGE */
+#assignment-page{padding-top:80px;min-height:100vh;display:flex;flex-direction:column}
+
+/* Top color bar */
+.assignment-color-bar{height:6px;width:100%;transition:background .3s}
+
+/* Header section */
+.assignment-header{padding:48px 56px 32px;border-bottom:1px solid rgba(0,0,0,0.1)}
+.assignment-back{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:16px;cursor:pointer;display:inline-block;transition:color .2s}
+.assignment-back:hover{color:var(--black)}
+.assignment-topic-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:8px}
+.assignment-title{font-family:var(--serif);font-size:clamp(36px,4vw,56px);font-weight:400;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px}
+.assignment-description{font-family:var(--serif);font-size:clamp(16px,1.5vw,20px);line-height:1.6;opacity:.7;max-width:700px;font-style:italic}
+
+/* Content area */
+.assignment-content{flex:1;padding:48px 56px;display:flex;flex-direction:column;gap:32px;max-width:900px;margin:0 auto;width:100%}
+
+/* Input section */
+.input-section{border:1px solid rgba(0,0,0,0.1);border-radius:4px;overflow:hidden}
+.input-section-header{padding:20px 28px;background:rgba(0,0,0,0.03);border-bottom:1px solid rgba(0,0,0,0.08)}
+.input-section-title{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.45)}
+
+/* Text input */
+.text-input-area{width:100%;min-height:200px;padding:28px;border:none;outline:none;font-family:var(--serif);font-size:16px;line-height:1.7;color:var(--black);background:var(--white);resize:vertical}
+.text-input-area::placeholder{color:rgba(0,0,0,0.25);font-style:italic}
+
+/* Image upload */
+.image-upload-area{padding:28px;border-top:1px solid rgba(0,0,0,0.08)}
+.upload-label{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border:1px solid rgba(0,0,0,0.2);border-radius:3px;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--black);transition:all .2s;background:var(--white)}
+.upload-label:hover{background:rgba(0,0,0,0.04);border-color:var(--black)}
+.upload-icon{width:16px;height:16px;border:1.5px solid var(--black);border-radius:2px;display:flex;align-items:center;justify-content:center}
+.upload-icon::before,.upload-icon::after{content:'';position:absolute}
+.upload-icon::before{width:8px;height:1.5px;background:var(--black)}
+.upload-icon::after{width:1.5px;height:8px;background:var(--black)}
+.upload-label{position:relative}
+.upload-input{display:none}
+
+/* Image preview */
+.image-preview-container{margin-top:20px;position:relative;display:none}
+.image-preview-container.has-image{display:block}
+.image-preview{max-width:100%;max-height:400px;border-radius:3px;border:1px solid rgba(0,0,0,0.1)}
+.image-remove{position:absolute;top:-10px;right:-10px;width:28px;height:28px;border-radius:50%;background:var(--black);color:var(--white);border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:opacity .2s}
+.image-remove:hover{opacity:.7}
+
+/* Save button */
+.save-section{display:flex;align-items:center;gap:20px;padding:20px 0;flex-wrap:wrap}
+.save-btn{padding:14px 32px;background:var(--black);color:var(--white);border:none;border-radius:3px;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;transition:all .2s}
+.save-btn:hover{opacity:.85;transform:translateY(-1px)}
+.save-btn:active{transform:translateY(0)}
+.save-status{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.4);transition:color .2s}
+.save-status.saved{color:rgba(0,0,0,0.7)}
+
+/* Existing submission display */
+.existing-submission{border:1px solid rgba(0,0,0,0.1);border-radius:4px;padding:28px;background:rgba(0,0,0,0.02);display:none}
+.existing-submission.has-content{display:block}
+.existing-submission-header{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.existing-submission-header .edit-toggle{cursor:pointer;color:rgba(0,0,0,0.5);transition:color .2s}
+.existing-submission-header .edit-toggle:hover{color:var(--black)}
+.existing-text{font-family:var(--serif);font-size:16px;line-height:1.7;color:var(--black);white-space:pre-wrap}
+.existing-image{max-width:100%;max-height:400px;border-radius:3px;margin-top:16px}
+
+/* Color band */
+.color-band{display:flex;height:8px;width:100%}
+.color-band span{flex:1}
+
+/* Footer */
+footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--black)}
+.footer-copy{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.32)}
+.footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
+.footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
+.footer-contact a:hover{color:var(--black);border-color:var(--black)}
+
+/* Responsive */
+@media(max-width:768px){
+  nav{padding:18px 20px}
+  .nav-links{gap:20px}
+  .nav-links a{font-size:12px}
+  .assignment-header{padding:32px 24px 24px}
+  .assignment-content{padding:32px 24px}
+  footer{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">TSG</a>
+  <ul class="nav-links">
+    <li><a href="assignments.html" class="active">Assignments</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="terms.html">Terms</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ ASSIGNMENT PAGE ════════ -->
+<div id="assignment-page">
+  <div class="assignment-color-bar" id="color-bar"></div>
+
+  <div class="assignment-header">
+    <a href="assignments.html" class="assignment-back">&#8592; Back to Assignments</a>
+    <p class="assignment-topic-label" id="topic-label"></p>
+    <h1 class="assignment-title" id="assignment-title"></h1>
+    <p class="assignment-description" id="assignment-description"></p>
+  </div>
+
+  <div class="assignment-content">
+    <!-- Existing submission display -->
+    <div class="existing-submission" id="existing-submission">
+      <div class="existing-submission-header">
+        <span>Your Submission</span>
+        <span class="edit-toggle" id="edit-toggle">(Edit)</span>
+      </div>
+      <div id="submission-content"></div>
+    </div>
+
+    <!-- Input section -->
+    <div class="input-section" id="input-section">
+      <div class="input-section-header">
+        <span class="input-section-title">Your Response</span>
+      </div>
+
+      <!-- Text input -->
+      <textarea class="text-input-area" id="text-input" placeholder="Write your response here..."></textarea>
+
+      <!-- Image upload -->
+      <div class="image-upload-area">
+        <label class="upload-label">
+          <input type="file" class="upload-input" id="image-input" accept="image/*">
+          <span class="upload-icon"></span>
+          Upload Image
+        </label>
+        <div class="image-preview-container" id="image-preview-container">
+          <img class="image-preview" id="image-preview" src="" alt="Preview">
+          <button class="image-remove" id="image-remove" title="Remove image">&times;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save section -->
+    <div class="save-section">
+      <button class="save-btn" id="save-btn">Save Assignment</button>
+      <span class="save-status" id="save-status"></span>
+    </div>
+  </div>
+
+  <div class="color-band">
+    <span style="background:var(--c-appearance)"></span>
+    <span style="background:var(--c-autoperception)"></span>
+    <span style="background:var(--c-desire)"></span>
+    <span style="background:var(--c-inheritance)"></span>
+    <span style="background:var(--c-fear)"></span>
+    <span style="background:var(--c-nerve)"></span>
+    <span style="background:var(--c-mirroring)"></span>
+    <span style="background:var(--c-traces)"></span>
+  </div>
+
+  <footer>
+    <span class="footer-logo">TSG</span>
+    <span class="footer-contact">Press & collaborations —
+      <a href="mailto:hello@thesubordinategaze.com">hello@thesubordinategaze.com</a>
+    </span>
+    <span class="footer-copy">The Subordinate Gaze &copy; 2025</span>
+  </footer>
+</div>
+
+<script>
+// Assignment data - inline for standalone HTML file
+const ASSIGNMENTS_DATA = {
+  appearance: {
+    topicKey: 'appearance',
+    topicLabel: 'Appearance',
+    color: '#d4a8c8',
+    assignments: [
+      { id: 'appearance-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'appearance-02', title: 'Assignment 02', description: 'Describe yourself without using your body', submissions: { text: '', image: null } },
+      { id: 'appearance-03', title: 'Assignment 03', description: 'Find a photograph you were never meant to see', submissions: { text: '', image: null } },
+      { id: 'appearance-04', title: 'Assignment 04', description: 'Dress for someone who has never met you', submissions: { text: '', image: null } },
+      { id: 'appearance-05', title: 'Assignment 05', description: 'Write a letter to your reflection', submissions: { text: '', image: null } }
+    ]
+  },
+  autoperception: {
+    topicKey: 'autoperception',
+    topicLabel: 'Autoperception',
+    color: '#e8c040',
+    assignments: [
+      { id: 'autoperception-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'autoperception-02', title: 'Assignment 02', description: 'Record yourself for one minute without speaking', submissions: { text: '', image: null } },
+      { id: 'autoperception-03', title: 'Assignment 03', description: 'List five things you pretend to be', submissions: { text: '', image: null } },
+      { id: 'autoperception-04', title: 'Assignment 04', description: 'Describe the version of you others see', submissions: { text: '', image: null } }
+    ]
+  },
+  desire: {
+    topicKey: 'desire',
+    topicLabel: 'Desire',
+    color: '#c42030',
+    assignments: [
+      { id: 'desire-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'desire-02', title: 'Assignment 02', description: 'Name a want you have never spoken aloud', submissions: { text: '', image: null } },
+      { id: 'desire-03', title: 'Assignment 03', description: 'Trace desire back to its origin', submissions: { text: '', image: null } },
+      { id: 'desire-04', title: 'Assignment 04', description: 'Write about what you are afraid to want', submissions: { text: '', image: null } },
+      { id: 'desire-05', title: 'Assignment 05', description: 'Find the desire that was never yours', submissions: { text: '', image: null } },
+      { id: 'desire-06', title: 'Assignment 06', description: 'Map the people who shaped what you want', submissions: { text: '', image: null } }
+    ]
+  },
+  inheritance: {
+    topicKey: 'inheritance',
+    topicLabel: 'Inheritance',
+    color: '#3a5a9e',
+    assignments: [
+      { id: 'inheritance-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'inheritance-02', title: 'Assignment 02', description: 'Find a habit you did not choose', submissions: { text: '', image: null } },
+      { id: 'inheritance-03', title: 'Assignment 03', description: 'Identify what was passed down in silence', submissions: { text: '', image: null } },
+      { id: 'inheritance-04', title: 'Assignment 04', description: 'Name the story told before you were born', submissions: { text: '', image: null } }
+    ]
+  },
+  fear: {
+    topicKey: 'fear',
+    topicLabel: 'Fear',
+    color: '#5c2a4a',
+    assignments: [
+      { id: 'fear-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'fear-02', title: 'Assignment 02', description: 'Describe a fear that protects you', submissions: { text: '', image: null } },
+      { id: 'fear-03', title: 'Assignment 03', description: 'Trace a fear to its first moment', submissions: { text: '', image: null } },
+      { id: 'fear-04', title: 'Assignment 04', description: 'Write about what fear has cost you', submissions: { text: '', image: null } },
+      { id: 'fear-05', title: 'Assignment 05', description: 'Find a fear that belongs to someone else', submissions: { text: '', image: null } }
+    ]
+  },
+  nerve: {
+    topicKey: 'nerve',
+    topicLabel: 'Nerve',
+    color: '#2d8a3e',
+    assignments: [
+      { id: 'nerve-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'nerve-02', title: 'Assignment 02', description: 'Notice where courage lives in your body', submissions: { text: '', image: null } },
+      { id: 'nerve-03', title: 'Assignment 03', description: 'Do one thing that makes you visible', submissions: { text: '', image: null } }
+    ]
+  },
+  mirroring: {
+    topicKey: 'mirroring',
+    topicLabel: 'Mirroring',
+    color: '#c8a8c0',
+    assignments: [
+      { id: 'mirroring-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'mirroring-02', title: 'Assignment 02', description: 'Find someone you have become', submissions: { text: '', image: null } },
+      { id: 'mirroring-03', title: 'Assignment 03', description: 'Notice what you copy without knowing', submissions: { text: '', image: null } },
+      { id: 'mirroring-04', title: 'Assignment 04', description: 'Write about who you see when you look at others', submissions: { text: '', image: null } },
+      { id: 'mirroring-05', title: 'Assignment 05', description: 'Identify your mirrors and your blind spots', submissions: { text: '', image: null } }
+    ]
+  },
+  traces: {
+    topicKey: 'traces',
+    topicLabel: 'Traces',
+    color: '#6e1a3a',
+    assignments: [
+      { id: 'traces-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
+      { id: 'traces-02', title: 'Assignment 02', description: 'Find evidence of who you used to be', submissions: { text: '', image: null } },
+      { id: 'traces-03', title: 'Assignment 03', description: 'Collect the objects that remember for you', submissions: { text: '', image: null } },
+      { id: 'traces-04', title: 'Assignment 04', description: 'Write about a trace you left by accident', submissions: { text: '', image: null } }
+    ]
+  }
+};
+
+// DOM elements
+const colorBar = document.getElementById('color-bar');
+const topicLabel = document.getElementById('topic-label');
+const assignmentTitle = document.getElementById('assignment-title');
+const assignmentDescription = document.getElementById('assignment-description');
+const textInput = document.getElementById('text-input');
+const imageInput = document.getElementById('image-input');
+const imagePreviewContainer = document.getElementById('image-preview-container');
+const imagePreview = document.getElementById('image-preview');
+const imageRemove = document.getElementById('image-remove');
+const saveBtn = document.getElementById('save-btn');
+const saveStatus = document.getElementById('save-status');
+const existingSubmission = document.getElementById('existing-submission');
+const submissionContent = document.getElementById('submission-content');
+const editToggle = document.getElementById('edit-toggle');
+const inputSection = document.getElementById('input-section');
+
+let currentAssignment = null;
+let currentTopic = null;
+let pendingImage = null;
+let isEditMode = false;
+
+// Load saved submissions from localStorage
+function loadSavedSubmissions() {
+  try {
+    const saved = localStorage.getItem('assignmentSubmissions');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (e) {
+    console.warn('Failed to load saved submissions:', e);
+  }
+  return {};
+}
+
+// Save submissions to localStorage
+function saveSubmissions(submissions) {
+  try {
+    localStorage.setItem('assignmentSubmissions', JSON.stringify(submissions));
+    return true;
+  } catch (e) {
+    console.warn('Failed to save submissions:', e);
+    return false;
+  }
+}
+
+// Convert file to base64
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Parse URL params
+function getUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    topic: params.get('topic'),
+    index: parseInt(params.get('index')) || 0
+  };
+}
+
+// Render existing submission
+function renderExistingSubmission(assignment) {
+  const hasText = assignment.submissions && assignment.submissions.text;
+  const hasImage = assignment.submissions && assignment.submissions.image;
+
+  if (!hasText && !hasImage) {
+    existingSubmission.classList.remove('has-content');
+    return;
+  }
+
+  existingSubmission.classList.add('has-content');
+  let html = '';
+
+  if (hasText) {
+    html += `<div class="existing-text">${hasText.replace(/</g, '<').replace(/>/g, '>')}</div>`;
+  }
+  if (hasImage) {
+    html += `<img class="existing-image" src="${hasImage}" alt="Assignment submission">`;
+  }
+
+  submissionContent.innerHTML = html;
+}
+
+// Show input section when editing
+function showInput() {
+  isEditMode = true;
+  existingSubmission.style.display = 'none';
+  inputSection.style.display = 'block';
+  editToggle.textContent = '(Cancel)';
+  textInput.focus();
+}
+
+// Hide input section to show submission
+function hideInput() {
+  isEditMode = false;
+  existingSubmission.style.display = 'block';
+  editToggle.textContent = '(Edit)';
+}
+
+// Initialize page
+function init() {
+  const { topic: topicKey, index } = getUrlParams();
+
+  // Find topic
+  currentTopic = ASSIGNMENTS_DATA[topicKey];
+  if (!currentTopic) {
+    // Default to appearance if invalid topic
+    currentTopic = ASSIGNMENTS_DATA.appearance;
+  }
+
+  // Get assignment
+  currentAssignment = currentTopic.assignments[index];
+  if (!currentAssignment) {
+    currentAssignment = currentTopic.assignments[0];
+  }
+
+  // Set colors
+  colorBar.style.background = currentTopic.color;
+
+  // Set content
+  topicLabel.textContent = currentTopic.topicLabel;
+  assignmentTitle.textContent = currentAssignment.title;
+  assignmentDescription.textContent = currentAssignment.description;
+
+  // Load saved submissions
+  const allSubmissions = loadSavedSubmissions();
+  const savedSubmission = allSubmissions[currentAssignment.id];
+
+  if (savedSubmission) {
+    // Populate form with saved data
+    textInput.value = savedSubmission.text || '';
+    if (savedSubmission.image) {
+      pendingImage = savedSubmission.image;
+      imagePreview.src = savedSubmission.image;
+      imagePreviewContainer.classList.add('has-image');
+    }
+    renderExistingSubmission(savedSubmission);
+  } else {
+    // Clear form
+    textInput.value = '';
+    pendingImage = null;
+    imagePreview.src = '';
+    imagePreviewContainer.classList.remove('has-image');
+    existingSubmission.classList.remove('has-content');
+  }
+
+  hideInput();
+}
+
+// Event listeners
+
+// Image file selection
+imageInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  try {
+    const base64 = await fileToBase64(file);
+    pendingImage = base64;
+    imagePreview.src = base64;
+    imagePreviewContainer.classList.add('has-image');
+    // Clear saved state since we have new pending data
+    saveStatus.textContent = '';
+    saveStatus.classList.remove('saved');
+  } catch (err) {
+    console.warn('Failed to read image:', err);
+  }
+});
+
+// Remove image
+imageRemove.addEventListener('click', () => {
+  pendingImage = null;
+  imagePreview.src = '';
+  imagePreviewContainer.classList.remove('has-image');
+  imageInput.value = '';
+  saveStatus.textContent = '';
+  saveStatus.classList.remove('saved');
+});
+
+// Save button
+saveBtn.addEventListener('click', () => {
+  if (!currentAssignment) return;
+
+  const allSubmissions = loadSavedSubmissions();
+
+  // Update assignment data
+  allSubmissions[currentAssignment.id] = {
+    text: textInput.value.trim(),
+    image: pendingImage
+  };
+
+  const success = saveSubmissions(allSubmissions);
+
+  if (success) {
+    saveStatus.textContent = 'Saved';
+    saveStatus.classList.add('saved');
+
+    // Update existing submission display
+    const updatedSubmission = allSubmissions[currentAssignment.id];
+    renderExistingSubmission(updatedSubmission);
+    hideInput();
+
+    // Clear status after 3 seconds
+    setTimeout(() => {
+      saveStatus.textContent = '';
+      saveStatus.classList.remove('saved');
+    }, 3000);
+  } else {
+    saveStatus.textContent = 'Save failed — storage may be full';
+    saveStatus.classList.remove('saved');
+  }
+});
+
+// Edit toggle
+editToggle.addEventListener('click', () => {
+  if (isEditMode) {
+    hideInput();
+  } else {
+    showInput();
+  }
+});
+
+// Text input changes clear saved status
+textInput.addEventListener('input', () => {
+  saveStatus.textContent = '';
+  saveStatus.classList.remove('saved');
+});
+
+// Initialize on load
+init();
+</script>
+</body>
+</html>
