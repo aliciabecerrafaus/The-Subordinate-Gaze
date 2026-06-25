@@ -244,6 +244,9 @@ allBooks.forEach((b, i) => {
     const idx = i;
     book.addEventListener("mouseenter", () => activate(idx, b));
     book.addEventListener("mouseleave", () => deactivate());
+    book.addEventListener("click", () => {
+      window.location.href = `assignments.html#${b.topic.toLowerCase()}`;
+    });
   }
 
   wrap.appendChild(book);
