@@ -15,6 +15,8 @@
   --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
 }
 html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+body{min-height:100vh;display:flex;flex-direction:column}
+body>div{flex:1;display:flex;flex-direction:column}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
@@ -27,7 +29,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 /* ════════ ABOUT ════════ */
 #about{padding-top:80px}
 .about-hero{padding:80px 56px 64px;position:relative;overflow:hidden;border-bottom:1px solid rgba(0,0,0,0.1)}
-.about-hero-bg{position:absolute;top:0;right:0;bottom:0;width:42%;background:var(--black);z-index:0}
 .about-hero-content{position:relative;z-index:1;max-width:620px}
 .about-kicker{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:16px}
 .about-h1{font-family:var(--serif);font-size:clamp(46px,5.8vw,78px);font-weight:400;line-height:1.04;letter-spacing:-0.03em;margin-bottom:28px}
@@ -37,13 +38,35 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 /* Beauvoir pull quote */
 .bv-quote-section{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(0,0,0,0.1)}
 @media(max-width:720px){.bv-quote-section{grid-template-columns:1fr}}
-.bv-quote-left{background:var(--black);color:var(--white);padding:72px 56px;display:flex;flex-direction:column;justify-content:center}
+.bv-quote-left{background:var(--c-inheritance);color:var(--white);padding:72px 56px;display:flex;flex-direction:column;justify-content:center}
 .bv-quote-mark{font-family:var(--serif);font-size:80px;line-height:.6;color:rgba(255,255,255,0.15);margin-bottom:24px}
 .bv-quote-text{font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.4vw,32px);line-height:1.45;letter-spacing:-0.01em;margin-bottom:28px}
 .bv-quote-attr{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.38)}
 .bv-quote-right{padding:72px 56px;display:flex;flex-direction:column;justify-content:center;gap:28px}
 .bv-body-p{font-family:var(--serif);font-size:clamp(15px,1.3vw,18px);line-height:1.75;color:rgba(0,0,0,0.7)}
 .bv-body-p strong{font-weight:500;color:var(--black)}
+
+/* Beauvoir biography */
+.beauvoir-bio{padding:72px 56px;border-bottom:1px solid rgba(0,0,0,0.1);display:grid;grid-template-columns:1fr 460px;gap:56px;align-items:start}
+.beauvoir-bio-image{width:100%}
+.beauvoir-bio-image img{width:100%;height:auto;display:block;border-radius:2px}
+.beauvoir-bio-text{max-width:680px}
+.beauvoir-bio-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:14px}
+.beauvoir-bio-name{font-family:var(--serif);font-size:clamp(32px,3.5vw,52px);font-weight:400;letter-spacing:-0.02em;line-height:1.1;margin-bottom:8px}
+.beauvoir-bio-dates{font-family:var(--sans);font-size:13px;color:rgba(0,0,0,0.4);margin-bottom:36px}
+.beauvoir-bio-body p{font-family:var(--serif);font-size:clamp(15px,1.3vw,17px);line-height:1.8;color:rgba(0,0,0,0.68);margin-bottom:20px}
+.beauvoir-bio-body em{font-style:italic}
+.beauvoir-bio-body p:last-child{margin-bottom:0}
+
+/* Project introduction */
+.project-intro{padding:72px 56px;border-bottom:1px solid rgba(0,0,0,0.1);background:rgba(0,0,0,0.02)}
+.project-intro-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,0,0,0.32);margin-bottom:16px}
+.project-intro-title{font-family:var(--serif);font-size:clamp(28px,3vw,44px);font-weight:400;letter-spacing:-0.02em;line-height:1.2;max-width:700px;margin-bottom:32px}
+.project-intro-title em{font-style:italic}
+.project-intro-body{max-width:680px}
+.project-intro-body p{font-family:var(--serif);font-size:clamp(15px,1.3vw,17px);line-height:1.8;color:rgba(0,0,0,0.68);margin-bottom:20px}
+.project-intro-body em{font-style:italic}
+.project-intro-body p:last-child{margin-bottom:0}
 
 /* Manifesto strip */
 .manifesto-strip{padding:64px 56px;border-bottom:1px solid rgba(0,0,0,0.1);display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px}
@@ -54,7 +77,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .manifesto-body{font-family:var(--serif);font-size:14px;line-height:1.7;color:rgba(0,0,0,0.6)}
 
 /* Colored bar band */
-.color-band{display:flex;height:8px;width:100%}
+.color-band{display:flex;height:8px;width:100%;margin-top:auto}
 .color-band span{flex:1}
 
 /* About CTA */
@@ -62,8 +85,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .about-cta-text{}
 .cta-h2{font-family:var(--serif);font-size:clamp(32px,3.5vw,52px);font-weight:400;letter-spacing:-0.02em;line-height:1.15;max-width:540px;margin-bottom:12px}
 .cta-sub{font-family:var(--serif);font-style:italic;font-size:16px;color:rgba(0,0,0,0.5);line-height:1.6}
-.btn-join{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--black);font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:14px 28px;border:1.5px solid var(--black);cursor:pointer;border-radius:2px;transition:background .2s,color .2s,transform .15s;width:fit-content}
-.btn-join:hover{background:var(--black);color:var(--white);transform:translateY(-1px)}
+.btn-join{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--black);font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:14px 28px;border:1.5px solid var(--c-inheritance);cursor:pointer;border-radius:2px;transition:background .2s,color .2s,transform .15s;width:fit-content}
+.btn-join:hover{background:var(--c-inheritance);color:var(--white);transform:translateY(-1px)}
 
 /* Footer */
 footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
@@ -72,6 +95,29 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
 .footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
 .footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
 .footer-contact a:hover{color:var(--black);border-color:var(--black)}
+
+/* ── Hamburger ── */
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:2px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--black);transition:transform .25s,opacity .25s}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .nav-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--white);padding:8px 20px 20px;border-bottom:1px solid rgba(0,0,0,0.12);gap:0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links li{padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+  .nav-links li:last-child{border-bottom:none}
+  .nav-links a{font-size:15px}
+  .about-hero{padding:36px 20px 40px}
+  .bv-quote-left{padding:40px 20px}
+  .bv-quote-right{padding:40px 20px}
+  .beauvoir-bio{padding:40px 20px;grid-template-columns:1fr;gap:24px}
+  .beauvoir-bio-image{max-width:280px}
+  .project-intro{padding:40px 20px}
+  .manifesto-strip{padding:40px 20px;gap:32px}
+  .about-cta{padding:40px 20px;flex-direction:column;align-items:flex-start;gap:24px}
+}
 </style>
 </head>
 <body>
@@ -85,14 +131,13 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
     <li><a href="about.html" class="active">About</a></li>
     <li><a href="terms.html">Terms</a></li>
   </ul>
+  <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ════════ ABOUT ════════ -->
 <div id="about">
   <div class="about-hero">
-    <div class="about-hero-bg"></div>
     <div class="about-hero-content">
-      <p class="about-kicker">About</p>
       <h1 class="about-h1">You were not<br>born <em>who you are.</em><br>You became it.</h1>
       <p class="about-intro">TSG is not a platform. It is a position. A refusal to accept that who you are was decided for you — by biology, by family, by the gaze of others.</p>
     </div>
@@ -108,6 +153,34 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
       <p class="bv-body-p">Beauvoir said it about women. We say it about <strong>everyone.</strong> Identity is not a given. It is a construction — ongoing, contested, and always in progress.</p>
       <p class="bv-body-p">The Subordinate Gaze is an archive built on that premise. We collect the work of people who are <strong>actively constructing who they are</strong> — through their answers, their questions, their contradictions.</p>
       <p class="bv-body-p">We don't offer answers. We offer <strong>the right prompts.</strong></p>
+    </div>
+  </div>
+
+  <div class="beauvoir-bio">
+    <div class="beauvoir-bio-text">
+      <p class="beauvoir-bio-label">Who She Was</p>
+      <h2 class="beauvoir-bio-name">Simone de Beauvoir</h2>
+      <p class="beauvoir-bio-dates">9 January 1908 — 14 April 1986</p>
+      <div class="beauvoir-bio-body">
+        <p>Simone de Beauvoir was a French philosopher, writer, and existentialist who spent her life doing things women were not supposed to do.</p>
+        <p>She passed her agrégation in philosophy at twenty-one, coming second in all of France. She then proceeded to spend the next six decades proving that second place had been a clerical error.</p>
+        <p>She wrote novels, memoirs, essays, and one of the most important books of the twentieth century — <em>The Second Sex</em> (1949) — in which she proposed, with characteristic precision, that womanhood is not a biological fact but a social construction. The book was immediately banned by the Vatican. She took this as a good sign.</p>
+        <p>She marched, she signed manifestos, she wore her hair up in a way that has since become iconic, she smoked, she travelled, she loved complicated people, and she never stopped writing. She died in Paris in 1986 and is buried next to Sartre in the Montparnasse cemetery, which is either very romantic or very on-brand, depending on how you look at it.</p>
+        <p>We like to think she would have approved. We also like to think she would have argued with at least half of it.</p>
+      </div>
+    </div>
+    <div class="beauvoir-bio-image">
+      <img src="photos/simone-de-beauvoir.jpg" alt="Simone de Beauvoir">
+    </div>
+  </div>
+
+  <div class="project-intro">
+    <p class="project-intro-label">The Project</p>
+    <h2 class="project-intro-title">Reinventing yourself<br>more than once before <em>twenty-five.</em></h2>
+    <div class="project-intro-body">
+      <p>We don't really know who Simone de Beauvoir would be today, but as girls with unresolved issues and good taste, we like to imagine her in tabi shoes, drinking overpriced matcha, chain-smoking outside a gallery opening and blasting Charli XCX.</p>
+      <p>This diary is inspired by her philosophy, and by everyone who has tried to reinvent themselves more than once before turning twenty-five. What you're holding explores identity, obsession, performance, power, and the exhaustion of being constantly perceived. It asks what happens when your self is not something fixed, but something you keep performing, editing, and rewriting without permission.</p>
+      <p>The Subordinate Gaze understands identity as a chaotic construction: unstable, influenced, always becoming between existentialism and rebellion. More than a publication, it's the kind of book you might have found in your mum's old trunk at sixteen, late at night, and thought: <em>so someone else felt like this too.</em></p>
     </div>
   </div>
 
@@ -151,6 +224,6 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
 </div>
 
 <script src="footer.js"></script>
-
+<script>document.querySelector('.nav-toggle').addEventListener('click',function(){document.querySelector('.nav-links').classList.toggle('open');});</script>
 </body>
 </html>

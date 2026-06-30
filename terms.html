@@ -15,6 +15,8 @@
   --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
 }
 html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+body{min-height:100vh;display:flex;flex-direction:column}
+body>div{flex:1;display:flex;flex-direction:column}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
@@ -33,7 +35,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .terms-lead{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,21px);line-height:1.7;max-width:600px;color:rgba(0,0,0,0.62)}
 
 /* Unsent-style anonymous note */
-.anon-note-section{background:var(--black);padding:72px 56px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;border-bottom:1px solid rgba(0,0,0,0.1)}
+.anon-note-section{background:var(--c-inheritance);padding:72px 56px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;border-bottom:1px solid rgba(0,0,0,0.1)}
 @media(max-width:720px){.anon-note-section{grid-template-columns:1fr}}
 .anon-note-left{color:var(--white)}
 .anon-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:20px}
@@ -70,7 +72,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .pledge-list li::before{content:'—';position:absolute;left:0;color:rgba(0,0,0,0.28)}
 
 /* Color band */
-.color-band{display:flex;height:8px;width:100%}
+.color-band{display:flex;height:8px;width:100%;margin-top:auto}
 .color-band span{flex:1}
 
 /* Footer */
@@ -80,6 +82,27 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
 .footer-contact{font-family:var(--serif);font-style:italic;font-size:13px;color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:8px}
 .footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
 .footer-contact a:hover{color:var(--black);border-color:var(--black)}
+
+/* ── Hamburger ── */
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:2px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--black);transition:transform .25s,opacity .25s}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .nav-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--white);padding:8px 20px 20px;border-bottom:1px solid rgba(0,0,0,0.12);gap:0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links li{padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+  .nav-links li:last-child{border-bottom:none}
+  .nav-links a{font-size:15px}
+  .terms-hero{padding:36px 20px 32px}
+  .anon-note-section{padding:40px 20px;gap:40px}
+  .sticky-note{width:100%;max-width:320px}
+  .terms-rules{padding:40px 20px}
+  .rule-item{padding:24px 0}
+  .terms-pledge{padding:40px 20px;gap:40px}
+}
 </style>
 </head>
 <body>
@@ -93,12 +116,12 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
     <li><a href="about.html">About</a></li>
     <li><a href="terms.html" class="active">Terms</a></li>
   </ul>
+  <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ════════ TERMS ════════ -->
 <div id="terms">
   <div class="terms-hero">
-    <p class="terms-kicker">How it works</p>
     <h1 class="terms-h1">You are <em>anonymous.</em><br>Your answer is not.</h1>
     <p class="terms-lead">TSG works because no one knows who you are — but everyone can read what you wrote. That asymmetry is the point.</p>
   </div>
@@ -186,6 +209,6 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
 </div>
 
 <script src="footer.js"></script>
-
+<script>document.querySelector('.nav-toggle').addEventListener('click',function(){document.querySelector('.nav-links').classList.toggle('open');});</script>
 </body>
 </html>

@@ -15,6 +15,8 @@
   --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
 }
 html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+body{min-height:100vh;display:flex;flex-direction:column}
+body>div{flex:1;display:flex;flex-direction:column}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
@@ -90,6 +92,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .color-band span{flex:1}
 
 /* Footer */
+#footer-container{margin-top:auto}
 footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .footer-logo{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--black)}
 .footer-copy{font-family:var(--sans);font-size:12px;color:rgba(0,0,0,0.32)}
@@ -97,14 +100,22 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
 .footer-contact a{color:rgba(0,0,0,0.38);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.15);padding-bottom:1px;transition:color .2s,border-color .2s}
 .footer-contact a:hover{color:var(--black);border-color:var(--black)}
 
-/* Responsive */
+/* ── Hamburger ── */
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:2px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--black);transition:transform .25s,opacity .25s}
+
+/* ── Responsive ── */
 @media(max-width:768px){
-  nav{padding:18px 20px}
-  .nav-links{gap:20px}
-  .nav-links a{font-size:12px}
-  .assignment-header{padding:32px 24px 24px}
-  .assignment-content{padding:32px 24px}
-  footer{padding:32px 24px}
+  nav{padding:14px 20px}
+  .nav-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--white);padding:8px 20px 20px;border-bottom:1px solid rgba(0,0,0,0.12);gap:0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links li{padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+  .nav-links li:last-child{border-bottom:none}
+  .nav-links a{font-size:15px}
+  .assignment-header{padding:32px 20px 24px}
+  .assignment-content{padding:24px 20px}
+  footer{padding:24px 20px}
 }
 </style>
 </head>
@@ -119,6 +130,7 @@ footer{padding:40px 56px;border-top:1px solid rgba(0,0,0,0.1);display:flex;align
     <li><a href="about.html">About</a></li>
     <li><a href="terms.html">Terms</a></li>
   </ul>
+  <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ════════ ASSIGNMENT PAGE ════════ -->
@@ -200,11 +212,13 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Appearance',
     color: '#ddadd0',
     assignments: [
-      { id: 'appearance-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'appearance-02', title: 'Assignment 02', description: 'Describe yourself without using your body', submissions: { text: '', image: null } },
-      { id: 'appearance-03', title: 'Assignment 03', description: 'Find a photograph you were never meant to see', submissions: { text: '', image: null } },
-      { id: 'appearance-04', title: 'Assignment 04', description: 'Dress for someone who has never met you', submissions: { text: '', image: null } },
-      { id: 'appearance-05', title: 'Assignment 05', description: 'Write a letter to your reflection', submissions: { text: '', image: null } }
+      { id: 'appearance-01', title: `The gaze you return`, description: `Being looked at is not the same as being seen — and looking back is its own quiet rebellion. Trace what happens in your body the moment you stop absorbing a gaze and start meeting it.`, submissions: { text: '', image: null } },
+      { id: 'appearance-02', title: `The Performer`, description: `Everyone has a version of themselves built for an audience — the one who walks taller, laughs louder, edits in real time. Sketch that character, costume and all, and ask who they're performing for.`, submissions: { text: '', image: null } },
+      { id: 'appearance-03', title: `What's wrong with the people in my class?`, description: `A tongue-in-cheek autopsy of the small, harmless ways we judge a room of strangers within seconds. Write the verdicts you'd never say out loud, then turn the mirror around.`, submissions: { text: '', image: null } },
+      { id: 'appearance-04', title: `Photograph a scar`, description: `A scar is proof the body survived something and kept going anyway. Photograph one — yours or someone else's, with permission — and let it be evidence, not apology.`, submissions: { text: '', image: null } },
+      { id: 'appearance-05', title: `The room before you enter it`, description: `There's a version of every room that exists in the seconds before you walk in — expectation, posture, the small performance of arrival. Describe that threshold moment, before the room gets to react to you.`, submissions: { text: '', image: null } },
+      { id: 'appearance-06', title: `How to behave in a crowd`, description: `We all carry an unwritten etiquette for disappearing safely into a group. Write the instructions you've absorbed without ever being taught them directly.`, submissions: { text: '', image: null } },
+      { id: 'appearance-07', title: `Dress code`, description: `Every space has an unspoken dress code, written or not, and a cost for breaking it. Write the rules you've learned to read on sight, and where you've chosen to ignore them.`, submissions: { text: '', image: null } }
     ]
   },
   autoperception: {
@@ -212,10 +226,16 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Autoperception',
     color: '#7a1142',
     assignments: [
-      { id: 'autoperception-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'autoperception-02', title: 'Assignment 02', description: 'Record yourself for one minute without speaking', submissions: { text: '', image: null } },
-      { id: 'autoperception-03', title: 'Assignment 03', description: 'List five things you pretend to be', submissions: { text: '', image: null } },
-      { id: 'autoperception-04', title: 'Assignment 04', description: 'Describe the version of you others see', submissions: { text: '', image: null } }
+      { id: 'autoperception-01', title: `Pieces of you`, description: `You are not one self but a collage of selves, stitched together from every room you've ever stood in. This is an invitation to stop looking for the 'real' you and start collecting the fragments — the contradictions, the masks, the leftover pieces — and let them sit beside each other without apology.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-02', title: `Ask your family who you are`, description: `Family holds an origin story about you that you've never fully read. Ask, collect the answers without correcting them, and place your own version next to theirs.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-03', title: `Revisit your 14 self`, description: `She had opinions about who you'd become, and she was both right and completely wrong. Write her a letter, or better, let her write one to you.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-04', title: `The version of you nobody has met yet`, description: `She's been waiting in the wings this whole time, half-formed and unannounced. Describe her without rushing her into existence.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-05', title: `The self you refuse to see`, description: `There's a version of you that doesn't make it into the self-portrait, the one you edit out before anyone looks. Let her in, just this once, without flinching.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-06', title: `Interview someone about becoming`, description: `Ask someone older, or simply someone further along, how they became who they are. Let their answer complicate everything you assumed about arriving.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-07', title: `The body I inherited`, description: `Long before it was yours to decide, your body arrived carrying someone else's hands, someone else's posture, someone else's history. Trace the parts of it that aren't fully your own invention.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-08', title: `Names I have worn`, description: `Nicknames, titles, the names given in anger or in love — each one is a costume that fit for a while. List the names you've answered to, and what each one asked of you.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-09', title: `The work of being yourself`, description: `Authenticity is sold as effortless, but it's labour, like everything else worth having. Document what it actually takes, on an ordinary day, to be recognisably you.`, submissions: { text: '', image: null } },
+      { id: 'autoperception-10', title: `Five events that made you who you are`, description: `Not the whole story — just the five hinge points where something turned. List them plainly, no need to explain or justify.`, submissions: { text: '', image: null } }
     ]
   },
   desire: {
@@ -223,12 +243,13 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Desire',
     color: '#ddadd0',
     assignments: [
-      { id: 'desire-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'desire-02', title: 'Assignment 02', description: 'Name a want you have never spoken aloud', submissions: { text: '', image: null } },
-      { id: 'desire-03', title: 'Assignment 03', description: 'Trace desire back to its origin', submissions: { text: '', image: null } },
-      { id: 'desire-04', title: 'Assignment 04', description: 'Write about what you are afraid to want', submissions: { text: '', image: null } },
-      { id: 'desire-05', title: 'Assignment 05', description: 'Find the desire that was never yours', submissions: { text: '', image: null } },
-      { id: 'desire-06', title: 'Assignment 06', description: 'Map the people who shaped what you want', submissions: { text: '', image: null } }
+      { id: 'desire-01', title: `The best of both worlds`, description: `Wanting two things at once isn't indecision, it's honesty. Map out the tug-of-war between the lives you could lead, and notice how rarely you're asked to want just one thing.`, submissions: { text: '', image: null } },
+      { id: 'desire-02', title: `Heartbreak survival guide`, description: `Write the manual nobody handed you: the rituals, the playlists, the small acts of defiance that get a person through. Make it practical, make it tender, make it yours.`, submissions: { text: '', image: null } },
+      { id: 'desire-03', title: `Take a picture of strangers holding hands`, description: `Tenderness happens in public more than we notice, if we're paying attention. Go find proof of it and bring it back.`, submissions: { text: '', image: null } },
+      { id: 'desire-04', title: `Ways to say "I Love You" without saying it`, description: `Love rarely announces itself in those exact three words; it shows up sideways, in gestures and habits and the way someone remembers how you take your coffee. Catalogue the quieter dialects of affection you actually speak.`, submissions: { text: '', image: null } },
+      { id: 'desire-05', title: `The shape of wanting`, description: `Desire rarely sits still long enough to be named cleanly. Give it a shape instead — a drawing, a diagram, a silhouette of what wanting actually feels like in you.`, submissions: { text: '', image: null } },
+      { id: 'desire-06', title: `Intimacy without touch`, description: `Closeness doesn't always need a hand to hold it together. Map the moments of intimacy that happened entirely without contact — eye contact, silence, the right word at the right time.`, submissions: { text: '', image: null } },
+      { id: 'desire-07', title: `The unsent conversation`, description: `Somewhere there's a message still sitting in drafts, a conversation that exists only in your head. Write it out in full, and decide, just for yourself, whether it needed an audience at all.`, submissions: { text: '', image: null } }
     ]
   },
   inheritance: {
@@ -236,10 +257,10 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Inheritance',
     color: '#009444',
     assignments: [
-      { id: 'inheritance-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'inheritance-02', title: 'Assignment 02', description: 'Find a habit you did not choose', submissions: { text: '', image: null } },
-      { id: 'inheritance-03', title: 'Assignment 03', description: 'Identify what was passed down in silence', submissions: { text: '', image: null } },
-      { id: 'inheritance-04', title: 'Assignment 04', description: 'Name the story told before you were born', submissions: { text: '', image: null } }
+      { id: 'inheritance-01', title: `The rules you inherited`, description: `Long before you could question them, the rules were already moving in — about how to sit, want, speak, take up space. List the ones still running quietly in the background, and circle the ones you're ready to evict.`, submissions: { text: '', image: null } },
+      { id: 'inheritance-02', title: `The silence that was passed down`, description: `Some inheritances are absences — the things nobody said, the topics that closed a room. Give shape to the silence that's been handed down through your family, and decide whether you're going to keep it.`, submissions: { text: '', image: null } },
+      { id: 'inheritance-03', title: `The last memory`, description: `Some memories arrive knowing they're the last of their kind, even before you do. Write the one that's still holding its shape, and what it left behind.`, submissions: { text: '', image: null } },
+      { id: 'inheritance-04', title: `What would your mother/father figure say?`, description: `Their voice has a way of showing up in your head long after the conversation ended. Write what they'd say about where you are right now, and what you'd say back.`, submissions: { text: '', image: null } }
     ]
   },
   fear: {
@@ -247,11 +268,13 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Fear',
     color: '#ffcf00',
     assignments: [
-      { id: 'fear-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'fear-02', title: 'Assignment 02', description: 'Describe a fear that protects you', submissions: { text: '', image: null } },
-      { id: 'fear-03', title: 'Assignment 03', description: 'Trace a fear to its first moment', submissions: { text: '', image: null } },
-      { id: 'fear-04', title: 'Assignment 04', description: 'Write about what fear has cost you', submissions: { text: '', image: null } },
-      { id: 'fear-05', title: 'Assignment 05', description: 'Find a fear that belongs to someone else', submissions: { text: '', image: null } }
+      { id: 'fear-01', title: `Accessing a future without limitations`, description: `Fear is a brilliant editor; it cuts whole futures before you even get to read the draft. Write or draw the version of your life with that editor fired, just for one page.`, submissions: { text: '', image: null } },
+      { id: 'fear-02', title: `Guide to escaping creative paralysis`, description: `The blank page is rarely about a lack of ideas; it's about the fear standing guard in front of them. Build yourself an exit route, step by step, for the next time you freeze.`, submissions: { text: '', image: null } },
+      { id: 'fear-03', title: `What you would risk`, description: `There's a version of bravery that has nothing to do with being fearless and everything to do with deciding something is worth the fall. Name what you'd actually be willing to lose, and for what.`, submissions: { text: '', image: null } },
+      { id: 'fear-04', title: `Defeat your inner imposter`, description: `That voice insisting you don't belong here has never once been right about anything. Write the rebuttal it's never gotten.`, submissions: { text: '', image: null } },
+      { id: 'fear-05', title: `The conversation you keep postponing`, description: `You know the one. Write the version you'd say if you weren't waiting for the perfect moment that never actually comes.`, submissions: { text: '', image: null } },
+      { id: 'fear-06', title: `What you would burn down if you weren't so reasonable`, description: `Reasonableness is its own quiet cage sometimes. Name what you'd let go up in flames if you stopped negotiating with yourself for one minute.`, submissions: { text: '', image: null } },
+      { id: 'fear-07', title: `Advise your former self`, description: `She couldn't have known then what you know now, and that's exactly the point. Write her the advice she wasn't ready to hear yet.`, submissions: { text: '', image: null } }
     ]
   },
   nerve: {
@@ -259,9 +282,16 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Nerve',
     color: '#e20613',
     assignments: [
-      { id: 'nerve-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'nerve-02', title: 'Assignment 02', description: 'Notice where courage lives in your body', submissions: { text: '', image: null } },
-      { id: 'nerve-03', title: 'Assignment 03', description: 'Do one thing that makes you visible', submissions: { text: '', image: null } }
+      { id: 'nerve-01', title: `Submission as strategy`, description: `Sometimes bending is the smartest move in the room. Explore the difference between submitting because you have no choice and submitting because you're playing a longer game — and where that line gets blurry.`, submissions: { text: '', image: null } },
+      { id: 'nerve-02', title: `Make a protest sign about something ridiculous`, description: `Protest doesn't have to be solemn to be sincere. Pick the smallest, silliest injustice you've ever felt and give it the full weight of a placard.`, submissions: { text: '', image: null } },
+      { id: 'nerve-03', title: `What we carry together`, description: `Some weight was never meant to be carried alone, even when we've been taught to act like it should be. Name what you're holding on behalf of someone else, and what it would mean to set part of it down, together.`, submissions: { text: '', image: null } },
+      { id: 'nerve-04', title: `Describe your ideal government`, description: `Forget what's realistic for a moment and design the world as it should run, not as it does. Who holds power, who doesn't, and why does it finally feel fair?`, submissions: { text: '', image: null } },
+      { id: 'nerve-05', title: `Draw the news`, description: `Skip the headline and draw the feeling underneath it instead. Let today's news become an image instead of another scroll.`, submissions: { text: '', image: null } },
+      { id: 'nerve-06', title: `We interrupt this programme`, description: `Imagine you could break into the broadcast, just for thirty seconds, and say the thing nobody's saying. Write the interruption.`, submissions: { text: '', image: null } },
+      { id: 'nerve-07', title: `The authority you claim`, description: `Nobody crowns you an expert on your own life; you have to take that authority for yourself. Write the territory only you get to have the final say over.`, submissions: { text: '', image: null } },
+      { id: 'nerve-08', title: `The story you add to the wall`, description: `Every wall of stories needs one more confession, one more thing finally said out loud. Add yours, anonymous or not.`, submissions: { text: '', image: null } },
+      { id: 'nerve-09', title: `Write a manifesto for something nobody defends`, description: `Pick the unfashionable, the unglamorous, the thing everyone quietly mocks, and defend it with total conviction. Manifestos work best when nobody asked for them.`, submissions: { text: '', image: null } },
+      { id: 'nerve-10', title: `What would you say if they were actually listening?`, description: `Most of us have rehearsed a version of honesty we never quite deliver. Say it here first, exactly as it would sound if you knew it would land.`, submissions: { text: '', image: null } }
     ]
   },
   mirroring: {
@@ -269,11 +299,13 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Mirroring',
     color: '#4963ab',
     assignments: [
-      { id: 'mirroring-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'mirroring-02', title: 'Assignment 02', description: 'Find someone you have become', submissions: { text: '', image: null } },
-      { id: 'mirroring-03', title: 'Assignment 03', description: 'Notice what you copy without knowing', submissions: { text: '', image: null } },
-      { id: 'mirroring-04', title: 'Assignment 04', description: 'Write about who you see when you look at others', submissions: { text: '', image: null } },
-      { id: 'mirroring-05', title: 'Assignment 05', description: 'Identify your mirrors and your blind spots', submissions: { text: '', image: null } }
+      { id: 'mirroring-01', title: `This song made me think of…`, description: `Some songs don't just soundtrack a moment, they hand you a mirror you didn't ask for. Follow one back to whoever — or whatever — it keeps reflecting.`, submissions: { text: '', image: null } },
+      { id: 'mirroring-02', title: `What do you know?`, description: `Not facts — instinct. Write down what you know in your body, the things you've never had to verify because they simply are.`, submissions: { text: '', image: null } },
+      { id: 'mirroring-03', title: `Draw a scene from a film that changed you`, description: `Some scenes lodge themselves somewhere permanent, rearranging how you see everything after. Draw it from memory, imperfect lines and all, and notice what your hand chooses to keep.`, submissions: { text: '', image: null } },
+      { id: 'mirroring-04', title: `Describe the people you admire`, description: `Admiration is a map of who we're quietly trying to become. List the people who hold something you want, and name exactly what that something is.`, submissions: { text: '', image: null } },
+      { id: 'mirroring-05', title: `What song sounds every time you look at the one you love?`, description: `Some people come with their own soundtrack, uninvited and impossible to mute. Name the song, and what it's actually trying to tell you.`, submissions: { text: '', image: null } },
+      { id: 'mirroring-06', title: `Send this page to someone who needs it`, description: `Make this page for someone else's eyes instead of your own, for once. Who needs to see it, and what would you want them to find here?`, submissions: { text: '', image: null } },
+      { id: 'mirroring-07', title: `Describe someone who made you feel seen`, description: `Being truly seen is rare enough to remember exactly who did it and how. Describe that person, and the specific moment they made the invisible parts of you visible.`, submissions: { text: '', image: null } }
     ]
   },
   traces: {
@@ -281,10 +313,11 @@ const ASSIGNMENTS_DATA = {
     topicLabel: 'Traces',
     color: '#7a1142',
     assignments: [
-      { id: 'traces-01', title: 'Assignment 01', description: 'Ask your family who you are', submissions: { text: '', image: null } },
-      { id: 'traces-02', title: 'Assignment 02', description: 'Find evidence of who you used to be', submissions: { text: '', image: null } },
-      { id: 'traces-03', title: 'Assignment 03', description: 'Collect the objects that remember for you', submissions: { text: '', image: null } },
-      { id: 'traces-04', title: 'Assignment 04', description: 'Write about a trace you left by accident', submissions: { text: '', image: null } }
+      { id: 'traces-01', title: `Summarise your day in third person`, description: `Step outside of yourself for a moment and report back like a stranger watching from across the street. Distance has a way of revealing what proximity hides.`, submissions: { text: '', image: null } },
+      { id: 'traces-02', title: `Everything in your bag right now`, description: `Empty it out. A bag is an unintentional self-portrait — the receipts, the half-used everything, the one item that doesn't belong but you can't throw away.`, submissions: { text: '', image: null } },
+      { id: 'traces-03', title: `Write down a recent argument`, description: `Not to win it again — to look at it from a safe distance. Transcribe what was actually said, then what you wish had been said instead.`, submissions: { text: '', image: null } },
+      { id: 'traces-04', title: `Outfit of the day`, description: `Clothes are a daily decision about who you're choosing to be. Document today's choice and the small negotiation behind it.`, submissions: { text: '', image: null } },
+      { id: 'traces-05', title: `A day in objects`, description: `Forget the narrative — just the objects. List everything you touched, moved, or carried today, and let the inventory tell its own quiet story.`, submissions: { text: '', image: null } }
     ]
   }
 };
@@ -414,7 +447,8 @@ function init() {
   colorBar.style.background = currentTopic.color;
 
   // Set content
-  topicLabel.textContent = currentTopic.topicLabel;
+  const assignmentNum = currentTopic.assignments.indexOf(currentAssignment) + 1;
+  topicLabel.textContent = currentTopic.topicLabel + ' — Assignment #' + assignmentNum;
   assignmentTitle.textContent = currentAssignment.title;
   assignmentDescription.textContent = currentAssignment.description;
 
@@ -514,6 +548,11 @@ editToggle.addEventListener('click', () => {
   } else {
     showInput();
   }
+});
+
+// Nav toggle
+document.querySelector('.nav-toggle').addEventListener('click', function() {
+  document.querySelector('.nav-links').classList.toggle('open');
 });
 
 // Text input changes clear saved status

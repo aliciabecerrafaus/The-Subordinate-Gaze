@@ -15,6 +15,8 @@
   --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
 }
 html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+body{min-height:100vh;display:flex;flex-direction:column}
+body>div{flex:1;display:flex;flex-direction:column}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
@@ -25,7 +27,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .nav-links a:not(.active):hover{color:var(--black);opacity:.7}
 
 /* ══ HOME ══ */
-#home{padding-top:80px;max-width:100%;align-items:center}
+#home{padding-top:80px;max-width:100%}
 .hero-content{width:100%;display:flex;flex-direction:column;align-items:center}
 
 .hero-text{text-align:left;padding:52px 56px 50px;width:100%;position:relative}
@@ -85,7 +87,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 
 /* ── hover overlay ── */
 .book-hover{
-  position:absolute;inset:0;
+  position:absolute;inset:0;overflow:hidden;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   padding-bottom:28px;opacity:0;transition:opacity .26s ease;pointer-events:none;
 }
@@ -96,7 +98,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
   width:2px;background:transparent;flex-shrink:0;height:0;
   margin-bottom:14px;transition:height .34s cubic-bezier(0.4,0,0.2,1) .08s;
 }
-.book.is-active .hover-line{height:100px}
+.book.is-active .hover-line{height:var(--hover-line-h,100px)}
 
 .hover-msg{
   writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
@@ -109,8 +111,28 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .book-wrap.deco-wrap .book{cursor:default}
 
 /* Color band */
-.color-band{display:flex;height:8px;width:100%;margin-top:0}
+.color-band{display:flex;height:8px;width:100%;margin-top:auto}
 .color-band span{flex:1}
+
+/* ── Hamburger ── */
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:2px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--black);transition:transform .25s,opacity .25s}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .nav-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--white);padding:8px 20px 20px;border-bottom:1px solid rgba(0,0,0,0.12);gap:0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links li{padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+  .nav-links li:last-child{border-bottom:none}
+  .nav-links a{font-size:15px}
+  .hero-text{padding:32px 20px 24px}
+  .stamp-wrap{top:10px;transform:translateX(-50%) rotate(-3deg)}
+  .shelf-area{padding-bottom:24px}
+  .books{justify-content:center;padding:0 8px}
+  .book-label{font-size:10px;letter-spacing:0.1em;padding-bottom:0}
+}
 </style>
 </head>
 <body>
@@ -124,6 +146,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
     <li><a href="about.html">About</a></li>
     <li><a href="terms.html">Terms</a></li>
   </ul>
+  <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ════════ HOME ════════ -->
@@ -192,15 +215,23 @@ mainBooks.forEach(b => {
   b.dir = Math.random() < 0.5 ? -1 : 1;
 });
 
-// Full ordered list: deco | main | deco
-const allBooks = [
-  ...decoLeft.map(b => ({ ...b, deco: true })),
-  ...mainBooks.map(b => ({ ...b, deco: false })),
-  ...decoRight.map(b => ({ ...b, deco: true })),
-];
+// On mobile: scale books down to fit viewport; show only main books
+const isMobile = window.innerWidth < 768;
+const mainBooksNaturalWidth = mainBooks.reduce((s, b) => s + b.w, 0) + (mainBooks.length - 1) * 8;
+const scaleFactor = isMobile ? Math.min(1, (window.innerWidth - 32) / mainBooksNaturalWidth) : 1;
+
+// Full ordered list: deco | main | deco (deco hidden on mobile)
+const allBooks = isMobile
+  ? mainBooks.map(b => ({ ...b, deco: false }))
+  : [
+      ...decoLeft.map(b => ({ ...b, deco: true })),
+      ...mainBooks.map(b => ({ ...b, deco: false })),
+      ...decoRight.map(b => ({ ...b, deco: true })),
+    ];
 
 // ── Build DOM ────────────────────────────────────────────────────
 const row = document.getElementById("booksRow");
+if (scaleFactor < 1) row.style.gap = Math.round(8 * scaleFactor) + "px";
 const wraps = [];
 const bookEls = [];
 
@@ -210,9 +241,10 @@ allBooks.forEach((b, i) => {
 
   const book = document.createElement("div");
   book.className = "book";
-  book.style.width = b.w + "px";
-  book.style.height = b.h + "px";
+  book.style.width = Math.round(b.w * scaleFactor) + "px";
+  book.style.height = Math.round(b.h * scaleFactor) + "px";
   book.style.background = b.color;
+  if (scaleFactor < 1) book.style.paddingBottom = Math.round(140 * scaleFactor) + "px";
 
   if (!b.deco) {
     // label
@@ -220,19 +252,25 @@ allBooks.forEach((b, i) => {
     label.className = "book-label";
     label.textContent = b.topic;
     label.style.color = getContrastColor(b.color);
+    if (scaleFactor < 1) label.style.paddingBottom = Math.round(28 * scaleFactor) + "px";
     book.appendChild(label);
 
     // hover overlay
     const hov = document.createElement("div");
     hov.className = "book-hover";
+    if (scaleFactor < 1) hov.style.paddingBottom = Math.round(28 * scaleFactor) + "px";
 
     const line = document.createElement("div");
     line.className = "hover-line";
     line.style.background = getContrastColor(b.color);
+    if (scaleFactor < 1) {
+      line.style.marginBottom = Math.round(14 * scaleFactor) + "px";
+      book.style.setProperty("--hover-line-h", Math.round(100 * scaleFactor) + "px");
+    }
 
     const msg = document.createElement("span");
     msg.className = "hover-msg";
-    msg.textContent = "Share your experience ";
+    msg.textContent = "Share your experience";
     msg.style.color = getContrastColor(b.color);
 
     hov.appendChild(line);
@@ -253,6 +291,11 @@ allBooks.forEach((b, i) => {
   row.appendChild(wrap);
   wraps.push(wrap);
   bookEls.push(book);
+});
+
+// ── Nav toggle ───────────────────────────────────────────────────
+document.querySelector('.nav-toggle').addEventListener('click', function() {
+  document.querySelector('.nav-links').classList.toggle('open');
 });
 
 // ── Tilt + push logic ────────────────────────────────────────────

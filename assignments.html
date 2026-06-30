@@ -15,6 +15,8 @@
   --sans:'Inter',sans-serif;--serif:'Lora',Georgia,serif;
 }
 html,body{height:100%;background:var(--white);color:var(--black);font-family:var(--sans);overflow-x:hidden}
+body{min-height:100vh;display:flex;flex-direction:column}
+body>div{flex:1;display:flex;flex-direction:column}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--white);border-bottom:1px solid rgba(0,0,0,0.1)}
@@ -30,8 +32,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .archive-bar{height:4px;position:absolute;top:0;left:0;right:0}
 .archive-kicker{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:8px}
 .archive-title-row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.archive-title{font-family:var(--serif);font-size:clamp(42px,5vw,70px);font-weight:400;line-height:1;letter-spacing:-0.02em}
-.archive-count{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,22px);color:rgba(0,0,0,0.38)}
+.archive-headline-wrap{position:relative;max-width:780px;margin-bottom:20px}
+.archive-topic-sticker{position:absolute;top:110px;right:140px;width:380px;height:150px;object-fit:contain;display:none;z-index:3;transform:rotate(8deg);filter:drop-shadow(-1px 3px 3px rgba(0,0,0,0.2))}
+.archive-headline{font-family:var(--serif);font-size:clamp(44px,5.5vw,74px);font-weight:400;line-height:1.06;letter-spacing:-0.025em;margin-bottom:0}
+.archive-headline em{font-style:italic}
+.archive-lead{font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.4vw,20px);line-height:1.7;max-width:600px;opacity:.65;margin-bottom:32px}
+.archive-title{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(0,0,0,0.38)}
+.archive-count{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.06em;color:rgba(0,0,0,0.28)}
 
 /* Topic filter tabs */
 .topic-tabs{display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,0.1);overflow-x:auto}
@@ -47,8 +54,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .card-dot{width:13px;height:13px;border-radius:2px;opacity:.55}
 .card-number{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
 .card-num-icon{width:13px;height:13px;border-radius:2px;flex-shrink:0}
+.card-num{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:0.1em;opacity:.5}
 .card-title{font-family:var(--sans);font-size:20px;font-weight:500;line-height:1.25;margin-top:2px}
 .card-desc{font-family:var(--serif);font-size:15px;line-height:1.55;opacity:.72;margin-top:4px}
+
+/* Topic overview menu (All view) */
+.topic-menu-card{padding:40px 32px;cursor:pointer;transition:filter .2s,transform .2s;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;border-radius:4px}
+.topic-menu-card:hover{filter:brightness(1.05);transform:translateY(-2px)}
+.topic-menu-name{font-family:var(--serif);font-size:clamp(24px,2.2vw,34px);font-weight:400;line-height:1.1;letter-spacing:-0.02em}
+.topic-menu-count{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;opacity:.62;margin-top:14px}
+.topic-menu-card[data-topic="appearance"]{background:var(--c-appearance);color:#111}
+.topic-menu-card[data-topic="autoperception"]{background:var(--c-autoperception);color:#fff}
+.topic-menu-card[data-topic="desire"]{background:var(--c-desire);color:#111}
+.topic-menu-card[data-topic="inheritance"]{background:var(--c-inheritance);color:#fff}
+.topic-menu-card[data-topic="fear"]{background:var(--c-fear);color:#111}
+.topic-menu-card[data-topic="nerve"]{background:var(--c-nerve);color:#fff}
+.topic-menu-card[data-topic="mirroring"]{background:var(--c-mirroring);color:#fff}
+.topic-menu-card[data-topic="traces"]{background:var(--c-traces);color:#fff}
 
 /* Topic colors — light bg (#ddadd0, #ffcf00) get dark text; dark bg get white text */
 .assignment-card[data-topic="appearance"]{background:var(--c-appearance);color:#111}
@@ -66,8 +88,28 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .assignment-card[data-topic="traces"] .card-desc{opacity:.78}
 
 /* Color band */
-.color-band{display:flex;height:8px;width:100%}
+.color-band{display:flex;height:8px;width:100%;margin-top:auto}
 .color-band span{flex:1}
+
+/* ── Hamburger ── */
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:2px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--black);transition:transform .25s,opacity .25s}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  nav{padding:14px 20px}
+  .nav-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--white);padding:8px 20px 20px;border-bottom:1px solid rgba(0,0,0,0.12);gap:0;z-index:199}
+  .nav-links.open{display:flex}
+  .nav-links li{padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+  .nav-links li:last-child{border-bottom:none}
+  .nav-links a{font-size:15px}
+  .archive-hero{padding:32px 20px 24px}
+  .assignments-grid{grid-template-columns:1fr;gap:16px;padding:20px 16px}
+  .assignment-card{min-height:200px}
+  .card-dots{overflow:hidden;gap:5px}
+  .card-dot{flex-shrink:0}
+}
 </style>
 </head>
 <body>
@@ -81,15 +123,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
     <li><a href="about.html">About</a></li>
     <li><a href="terms.html">Terms</a></li>
   </ul>
+  <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ════════ ASSIGNMENTS ════════ -->
 <div id="archive">
   <div class="archive-hero">
     <div class="archive-bar"></div>
-    <p class="archive-kicker">Assignments</p>
+    <div class="archive-headline-wrap">
+      <img class="archive-topic-sticker" id="archive-topic-sticker" alt="">
+      <h1 class="archive-headline">The work<br>of becoming<br><em>yourself.</em></h1>
+    </div>
+    <p class="archive-lead">Forty prompts across eight territories of the self. No right answers — only the ones you're brave enough to write.</p>
     <div class="archive-title-row">
-      <h1 class="archive-title" id="archive-title">All Topics</h1>
+      <span class="archive-title" id="archive-title">All Topics</span>
       <span class="archive-count" id="archive-count"></span>
     </div>
   </div>
@@ -121,67 +168,88 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 <script>
 const TOPICS = {
   appearance: { label: 'Appearance', assignments: [
-    { id: 'appearance-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'appearance-02', title: 'Assignment 02', desc: 'Describe yourself without using your body' },
-    { id: 'appearance-03', title: 'Assignment 03', desc: 'Find a photograph you were never meant to see' },
-    { id: 'appearance-04', title: 'Assignment 04', desc: 'Dress for someone who has never met you' },
-    { id: 'appearance-05', title: 'Assignment 05', desc: 'Write a letter to your reflection' },
+    { id: 'appearance-01', title: `The gaze you return`, desc: `Being looked at is not the same as being seen — and looking back is its own quiet rebellion. Trace what happens in your body the moment you stop absorbing a gaze and start meeting it.` },
+    { id: 'appearance-02', title: `The Performer`, desc: `Everyone has a version of themselves built for an audience — the one who walks taller, laughs louder, edits in real time. Sketch that character, costume and all, and ask who they're performing for.` },
+    { id: 'appearance-03', title: `What's wrong with the people in my class?`, desc: `A tongue-in-cheek autopsy of the small, harmless ways we judge a room of strangers within seconds. Write the verdicts you'd never say out loud, then turn the mirror around.` },
+    { id: 'appearance-04', title: `Photograph a scar`, desc: `A scar is proof the body survived something and kept going anyway. Photograph one — yours or someone else's, with permission — and let it be evidence, not apology.` },
+    { id: 'appearance-05', title: `The room before you enter it`, desc: `There's a version of every room that exists in the seconds before you walk in — expectation, posture, the small performance of arrival. Describe that threshold moment, before the room gets to react to you.` },
+    { id: 'appearance-06', title: `How to behave in a crowd`, desc: `We all carry an unwritten etiquette for disappearing safely into a group. Write the instructions you've absorbed without ever being taught them directly.` },
+    { id: 'appearance-07', title: `Dress code`, desc: `Every space has an unspoken dress code, written or not, and a cost for breaking it. Write the rules you've learned to read on sight, and where you've chosen to ignore them.` },
   ]},
   autoperception: { label: 'Autoperception', assignments: [
-    { id: 'autoperception-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'autoperception-02', title: 'Assignment 02', desc: 'Record yourself for one minute without speaking' },
-    { id: 'autoperception-03', title: 'Assignment 03', desc: 'List five things you pretend to be' },
-    { id: 'autoperception-04', title: 'Assignment 04', desc: 'Describe the version of you others see' },
+    { id: 'autoperception-01', title: `Pieces of you`, desc: `You are not one self but a collage of selves, stitched together from every room you've ever stood in. This is an invitation to stop looking for the 'real' you and start collecting the fragments — the contradictions, the masks, the leftover pieces — and let them sit beside each other without apology.` },
+    { id: 'autoperception-02', title: `Ask your family who you are`, desc: `Family holds an origin story about you that you've never fully read. Ask, collect the answers without correcting them, and place your own version next to theirs.` },
+    { id: 'autoperception-03', title: `Revisit your 14 self`, desc: `She had opinions about who you'd become, and she was both right and completely wrong. Write her a letter, or better, let her write one to you.` },
+    { id: 'autoperception-04', title: `The version of you nobody has met yet`, desc: `She's been waiting in the wings this whole time, half-formed and unannounced. Describe her without rushing her into existence.` },
+    { id: 'autoperception-05', title: `The self you refuse to see`, desc: `There's a version of you that doesn't make it into the self-portrait, the one you edit out before anyone looks. Let her in, just this once, without flinching.` },
+    { id: 'autoperception-06', title: `Interview someone about becoming`, desc: `Ask someone older, or simply someone further along, how they became who they are. Let their answer complicate everything you assumed about arriving.` },
+    { id: 'autoperception-07', title: `The body I inherited`, desc: `Long before it was yours to decide, your body arrived carrying someone else's hands, someone else's posture, someone else's history. Trace the parts of it that aren't fully your own invention.` },
+    { id: 'autoperception-08', title: `Names I have worn`, desc: `Nicknames, titles, the names given in anger or in love — each one is a costume that fit for a while. List the names you've answered to, and what each one asked of you.` },
+    { id: 'autoperception-09', title: `The work of being yourself`, desc: `Authenticity is sold as effortless, but it's labour, like everything else worth having. Document what it actually takes, on an ordinary day, to be recognisably you.` },
+    { id: 'autoperception-10', title: `Five events that made you who you are`, desc: `Not the whole story — just the five hinge points where something turned. List them plainly, no need to explain or justify.` },
   ]},
   desire: { label: 'Desire', assignments: [
-    { id: 'desire-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'desire-02', title: 'Assignment 02', desc: 'Name a want you have never spoken aloud' },
-    { id: 'desire-03', title: 'Assignment 03', desc: 'Trace desire back to its origin' },
-    { id: 'desire-04', title: 'Assignment 04', desc: 'Write about what you are afraid to want' },
-    { id: 'desire-05', title: 'Assignment 05', desc: 'Find the desire that was never yours' },
-    { id: 'desire-06', title: 'Assignment 06', desc: 'Map the people who shaped what you want' },
+    { id: 'desire-01', title: `The best of both worlds`, desc: `Wanting two things at once isn't indecision, it's honesty. Map out the tug-of-war between the lives you could lead, and notice how rarely you're asked to want just one thing.` },
+    { id: 'desire-02', title: `Heartbreak survival guide`, desc: `Write the manual nobody handed you: the rituals, the playlists, the small acts of defiance that get a person through. Make it practical, make it tender, make it yours.` },
+    { id: 'desire-03', title: `Take a picture of strangers holding hands`, desc: `Tenderness happens in public more than we notice, if we're paying attention. Go find proof of it and bring it back.` },
+    { id: 'desire-04', title: `Ways to say "I Love You" without saying it`, desc: `Love rarely announces itself in those exact three words; it shows up sideways, in gestures and habits and the way someone remembers how you take your coffee. Catalogue the quieter dialects of affection you actually speak.` },
+    { id: 'desire-05', title: `The shape of wanting`, desc: `Desire rarely sits still long enough to be named cleanly. Give it a shape instead — a drawing, a diagram, a silhouette of what wanting actually feels like in you.` },
+    { id: 'desire-06', title: `Intimacy without touch`, desc: `Closeness doesn't always need a hand to hold it together. Map the moments of intimacy that happened entirely without contact — eye contact, silence, the right word at the right time.` },
+    { id: 'desire-07', title: `The unsent conversation`, desc: `Somewhere there's a message still sitting in drafts, a conversation that exists only in your head. Write it out in full, and decide, just for yourself, whether it needed an audience at all.` },
   ]},
   inheritance: { label: 'Inheritance', assignments: [
-    { id: 'inheritance-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'inheritance-02', title: 'Assignment 02', desc: 'Find a habit you did not choose' },
-    { id: 'inheritance-03', title: 'Assignment 03', desc: 'Identify what was passed down in silence' },
-    { id: 'inheritance-04', title: 'Assignment 04', desc: 'Name the story told before you were born' },
+    { id: 'inheritance-01', title: `The rules you inherited`, desc: `Long before you could question them, the rules were already moving in — about how to sit, want, speak, take up space. List the ones still running quietly in the background, and circle the ones you're ready to evict.` },
+    { id: 'inheritance-02', title: `The silence that was passed down`, desc: `Some inheritances are absences — the things nobody said, the topics that closed a room. Give shape to the silence that's been handed down through your family, and decide whether you're going to keep it.` },
+    { id: 'inheritance-03', title: `The last memory`, desc: `Some memories arrive knowing they're the last of their kind, even before you do. Write the one that's still holding its shape, and what it left behind.` },
+    { id: 'inheritance-04', title: `What would your mother/father figure say?`, desc: `Their voice has a way of showing up in your head long after the conversation ended. Write what they'd say about where you are right now, and what you'd say back.` },
   ]},
   fear: { label: 'Fear', assignments: [
-    { id: 'fear-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'fear-02', title: 'Assignment 02', desc: 'Describe a fear that protects you' },
-    { id: 'fear-03', title: 'Assignment 03', desc: 'Trace a fear to its first moment' },
-    { id: 'fear-04', title: 'Assignment 04', desc: 'Write about what fear has cost you' },
-    { id: 'fear-05', title: 'Assignment 05', desc: 'Find a fear that belongs to someone else' },
+    { id: 'fear-01', title: `Accessing a future without limitations`, desc: `Fear is a brilliant editor; it cuts whole futures before you even get to read the draft. Write or draw the version of your life with that editor fired, just for one page.` },
+    { id: 'fear-02', title: `Guide to escaping creative paralysis`, desc: `The blank page is rarely about a lack of ideas; it's about the fear standing guard in front of them. Build yourself an exit route, step by step, for the next time you freeze.` },
+    { id: 'fear-03', title: `What you would risk`, desc: `There's a version of bravery that has nothing to do with being fearless and everything to do with deciding something is worth the fall. Name what you'd actually be willing to lose, and for what.` },
+    { id: 'fear-04', title: `Defeat your inner imposter`, desc: `That voice insisting you don't belong here has never once been right about anything. Write the rebuttal it's never gotten.` },
+    { id: 'fear-05', title: `The conversation you keep postponing`, desc: `You know the one. Write the version you'd say if you weren't waiting for the perfect moment that never actually comes.` },
+    { id: 'fear-06', title: `What you would burn down if you weren't so reasonable`, desc: `Reasonableness is its own quiet cage sometimes. Name what you'd let go up in flames if you stopped negotiating with yourself for one minute.` },
+    { id: 'fear-07', title: `Advise your former self`, desc: `She couldn't have known then what you know now, and that's exactly the point. Write her the advice she wasn't ready to hear yet.` },
   ]},
   nerve: { label: 'Nerve', assignments: [
-    { id: 'nerve-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'nerve-02', title: 'Assignment 02', desc: 'Notice where courage lives in your body' },
-    { id: 'nerve-03', title: 'Assignment 03', desc: 'Do one thing that makes you visible' },
+    { id: 'nerve-01', title: `Submission as strategy`, desc: `Sometimes bending is the smartest move in the room. Explore the difference between submitting because you have no choice and submitting because you're playing a longer game — and where that line gets blurry.` },
+    { id: 'nerve-02', title: `Make a protest sign about something ridiculous`, desc: `Protest doesn't have to be solemn to be sincere. Pick the smallest, silliest injustice you've ever felt and give it the full weight of a placard.` },
+    { id: 'nerve-03', title: `What we carry together`, desc: `Some weight was never meant to be carried alone, even when we've been taught to act like it should be. Name what you're holding on behalf of someone else, and what it would mean to set part of it down, together.` },
+    { id: 'nerve-04', title: `Describe your ideal government`, desc: `Forget what's realistic for a moment and design the world as it should run, not as it does. Who holds power, who doesn't, and why does it finally feel fair?` },
+    { id: 'nerve-05', title: `Draw the news`, desc: `Skip the headline and draw the feeling underneath it instead. Let today's news become an image instead of another scroll.` },
+    { id: 'nerve-06', title: `We interrupt this programme`, desc: `Imagine you could break into the broadcast, just for thirty seconds, and say the thing nobody's saying. Write the interruption.` },
+    { id: 'nerve-07', title: `The authority you claim`, desc: `Nobody crowns you an expert on your own life; you have to take that authority for yourself. Write the territory only you get to have the final say over.` },
+    { id: 'nerve-08', title: `The story you add to the wall`, desc: `Every wall of stories needs one more confession, one more thing finally said out loud. Add yours, anonymous or not.` },
+    { id: 'nerve-09', title: `Write a manifesto for something nobody defends`, desc: `Pick the unfashionable, the unglamorous, the thing everyone quietly mocks, and defend it with total conviction. Manifestos work best when nobody asked for them.` },
+    { id: 'nerve-10', title: `What would you say if they were actually listening?`, desc: `Most of us have rehearsed a version of honesty we never quite deliver. Say it here first, exactly as it would sound if you knew it would land.` },
   ]},
   mirroring: { label: 'Mirroring', assignments: [
-    { id: 'mirroring-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'mirroring-02', title: 'Assignment 02', desc: 'Find someone you have become' },
-    { id: 'mirroring-03', title: 'Assignment 03', desc: 'Notice what you copy without knowing' },
-    { id: 'mirroring-04', title: 'Assignment 04', desc: 'Write about who you see when you look at others' },
-    { id: 'mirroring-05', title: 'Assignment 05', desc: 'Identify your mirrors and your blind spots' },
+    { id: 'mirroring-01', title: `This song made me think of…`, desc: `Some songs don't just soundtrack a moment, they hand you a mirror you didn't ask for. Follow one back to whoever — or whatever — it keeps reflecting.` },
+    { id: 'mirroring-02', title: `What do you know?`, desc: `Not facts — instinct. Write down what you know in your body, the things you've never had to verify because they simply are.` },
+    { id: 'mirroring-03', title: `Draw a scene from a film that changed you`, desc: `Some scenes lodge themselves somewhere permanent, rearranging how you see everything after. Draw it from memory, imperfect lines and all, and notice what your hand chooses to keep.` },
+    { id: 'mirroring-04', title: `Describe the people you admire`, desc: `Admiration is a map of who we're quietly trying to become. List the people who hold something you want, and name exactly what that something is.` },
+    { id: 'mirroring-05', title: `What song sounds every time you look at the one you love?`, desc: `Some people come with their own soundtrack, uninvited and impossible to mute. Name the song, and what it's actually trying to tell you.` },
+    { id: 'mirroring-06', title: `Send this page to someone who needs it`, desc: `Make this page for someone else's eyes instead of your own, for once. Who needs to see it, and what would you want them to find here?` },
+    { id: 'mirroring-07', title: `Describe someone who made you feel seen`, desc: `Being truly seen is rare enough to remember exactly who did it and how. Describe that person, and the specific moment they made the invisible parts of you visible.` },
   ]},
   traces: { label: 'Traces', assignments: [
-    { id: 'traces-01', title: 'Assignment 01', desc: 'Ask your family who you are' },
-    { id: 'traces-02', title: 'Assignment 02', desc: 'Find evidence of who you used to be' },
-    { id: 'traces-03', title: 'Assignment 03', desc: 'Collect the objects that remember for you' },
-    { id: 'traces-04', title: 'Assignment 04', desc: 'Write about a trace you left by accident' },
+    { id: 'traces-01', title: `Summarise your day in third person`, desc: `Step outside of yourself for a moment and report back like a stranger watching from across the street. Distance has a way of revealing what proximity hides.` },
+    { id: 'traces-02', title: `Everything in your bag right now`, desc: `Empty it out. A bag is an unintentional self-portrait — the receipts, the half-used everything, the one item that doesn't belong but you can't throw away.` },
+    { id: 'traces-03', title: `Write down a recent argument`, desc: `Not to win it again — to look at it from a safe distance. Transcribe what was actually said, then what you wish had been said instead.` },
+    { id: 'traces-04', title: `Outfit of the day`, desc: `Clothes are a daily decision about who you're choosing to be. Document today's choice and the small negotiation behind it.` },
+    { id: 'traces-05', title: `A day in objects`, desc: `Forget the narrative — just the objects. List everything you touched, moved, or carried today, and let the inventory tell its own quiet story.` },
   ]}
 };
 
 const DOT = {
   appearance:    'rgba(140,60,110,0.45)',
-  autoperception:'rgba(120,70,0,0.4)',
+  autoperception:'rgba(255,255,255,0.42)',
   desire:        'rgba(255,255,255,0.45)',
   inheritance:   'rgba(255,255,255,0.45)',
   fear:          'rgba(255,255,255,0.4)',
   nerve:         'rgba(255,255,255,0.4)',
-  mirroring:     'rgba(120,50,100,0.4)',
+  mirroring:     'rgba(255,255,255,0.42)',
   traces:        'rgba(255,255,255,0.42)'
 };
 
@@ -190,32 +258,42 @@ function cardHTML(a, key, idx, dot) {
   return `
     <div class="assignment-card" data-topic="${key}" onclick="window.location.href='assignment.html?topic=${key}&index=${idx}'">
       <div class="card-dots">${dots}</div>
-      <div class="card-number"><div class="card-num-icon" style="background:${dot}"></div>${a.title}</div>
+      <div class="card-num">Assignment #${idx + 1}</div>
       <div class="card-title">${a.title}</div>
       <div class="card-desc">${a.desc}</div>
     </div>`;
 }
 
+function selectTopic(key) {
+  document.querySelectorAll('.topic-tab').forEach(t => t.classList.toggle('active', t.dataset.topic === key));
+  renderAssignments(key);
+}
+
 function renderAssignments(topicKey) {
-  const grid  = document.getElementById('assignments-grid');
-  const bar   = document.querySelector('.archive-bar');
-  const title = document.getElementById('archive-title');
-  const count = document.getElementById('archive-count');
+  const grid    = document.getElementById('assignments-grid');
+  const bar     = document.querySelector('.archive-bar');
+  const title   = document.getElementById('archive-title');
+  const count   = document.getElementById('archive-count');
+  const sticker = document.getElementById('archive-topic-sticker');
 
   if (topicKey === 'all') {
-    title.textContent = 'All Assignments';
+    sticker.style.display = 'none';
+    title.textContent = '';
     count.textContent = '';
     bar.style.background = 'linear-gradient(to right,var(--c-appearance),var(--c-autoperception),var(--c-desire),var(--c-inheritance),var(--c-fear),var(--c-nerve),var(--c-mirroring),var(--c-traces))';
-    let html = '';
-    Object.keys(TOPICS).forEach(key => {
+    grid.innerHTML = Object.keys(TOPICS).map(key => {
       const topic = TOPICS[key];
-      const dot = DOT[key] || 'rgba(0,0,0,0.3)';
-      html += `<div style="grid-column:1/-1;padding:32px 56px 12px;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.35)">${topic.label}</div>`;
-      html += topic.assignments.map((a, idx) => cardHTML(a, key, idx, dot)).join('');
-    });
-    grid.innerHTML = html;
+      const n = topic.assignments.length;
+      return `<div class="topic-menu-card" data-topic="${key}" onclick="selectTopic('${key}')">
+        <div class="topic-menu-name">${topic.label}</div>
+        <div class="topic-menu-count">${n} assignment${n > 1 ? 's' : ''}</div>
+      </div>`;
+    }).join('');
   } else {
     const topic = TOPICS[topicKey];
+    sticker.src = 'Stickers/' + topicKey + '.png';
+    sticker.alt = topic.label;
+    sticker.style.display = 'block';
     title.textContent = topic.label;
     count.textContent = topic.assignments.length + ' assignment' + (topic.assignments.length > 1 ? 's' : '');
     bar.style.background = 'var(--c-' + topicKey + ')';
@@ -243,5 +321,6 @@ if (TOPICS[hash]) {
 }
 </script>
 <script src="footer.js"></script>
+<script>document.querySelector('.nav-toggle').addEventListener('click',function(){document.querySelector('.nav-links').classList.toggle('open');});</script>
 </body>
 </html>
